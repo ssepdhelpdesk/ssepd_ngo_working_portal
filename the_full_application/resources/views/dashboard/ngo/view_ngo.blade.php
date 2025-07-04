@@ -7,16 +7,16 @@ NGO || View Details
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
    .fixed-table {
-   table-layout: fixed;
-   width: 100%;
+      table-layout: fixed;
+      width: 100%;
    }
    .fixed-table th,
    .fixed-table td {
-   word-break: break-word;
-   white-space: normal;
-   vertical-align: top;
-   text-align: left;
-   padding: 8px;
+      word-break: break-word;
+      white-space: normal;
+      vertical-align: top;
+      text-align: left;
+      padding: 8px;
    }
 </style>
 @endsection 
@@ -105,10 +105,10 @@ NGO || View Details
                               ? explode(',', $NgoRegistration->nature_of_organisation)
                               : [];
                               $selectedNatureLabels = collect($selectedNatureIds)->map(function ($id) use ($NgoRegistration, $natureOptions) {
-                              $id = trim($id);
-                              return ($id == 6 && !empty($NgoRegistration->nature_of_organisation_other))
-                              ? $natureOptions[6] . ': ' . $NgoRegistration->nature_of_organisation_other
-                              : ($natureOptions[$id] ?? null);
+                                 $id = trim($id);
+                                 return ($id == 6 && !empty($NgoRegistration->nature_of_organisation_other))
+                                 ? $natureOptions[6] . ': ' . $NgoRegistration->nature_of_organisation_other
+                                 : ($natureOptions[$id] ?? null);
                               })->filter()->implode(', ');
                               @endphp
                               <table class="table table-bordered fixed-table">
@@ -126,7 +126,7 @@ NGO || View Details
                                        <td>
                                           @if(!empty($NgoRegistration->ngo_org_pan_file))
                                           <label class="badge bg-info">
-                                          <a href="{{ url('storage/' . $NgoRegistration->ngo_org_pan_file) }}" target="_blank" class="text-white">View Pan Document</a>
+                                             <a href="{{ url('storage/' . $NgoRegistration->ngo_org_pan_file) }}" target="_blank" class="text-white">View Pan Document</a>
                                           </label>
                                           @else N/A @endif
                                        </td>
@@ -160,7 +160,7 @@ NGO || View Details
                                        <td>
                                           @if(!empty($NgoRegistration->ngo_file_rc))
                                           <label class="badge bg-info">
-                                          <a href="{{ url('storage/' . $NgoRegistration->ngo_file_rc) }}" target="_blank" class="text-white">View Registration Certificate</a>
+                                             <a href="{{ url('storage/' . $NgoRegistration->ngo_file_rc) }}" target="_blank" class="text-white">View Registration Certificate</a>
                                           </label>
                                           @else N/A @endif
                                        </td>
@@ -178,7 +178,7 @@ NGO || View Details
                                        <td>
                                           @if(!empty($NgoRegistration->ngo_file_byelaws))
                                           <label class="badge bg-info">
-                                          <a href="{{ url('storage/' . $NgoRegistration->ngo_file_byelaws) }}" target="_blank" class="text-white">View Byelaws</a>
+                                             <a href="{{ url('storage/' . $NgoRegistration->ngo_file_byelaws) }}" target="_blank" class="text-white">View Byelaws</a>
                                           </label>
                                           @else N/A @endif
                                        </td>
@@ -264,7 +264,7 @@ NGO || View Details
                                        <td>
                                           @if(!empty($officeBearer->office_bearer_pan_file))
                                           <label class="badge bg-info">
-                                          <a href="{{ url('storage/' . $officeBearer->office_bearer_pan_file) }}" target="_blank" class="text-white">View PAN</a>
+                                             <a href="{{ url('storage/' . $officeBearer->office_bearer_pan_file) }}" target="_blank" class="text-white">View PAN</a>
                                           </label>
                                           @else
                                           N/A
@@ -274,7 +274,7 @@ NGO || View Details
                                        <td>
                                           @if(!empty($officeBearer->office_bearer_aadhar_file))
                                           <label class="badge bg-info">
-                                          <a href="{{ url('storage/' . $officeBearer->office_bearer_aadhar_file) }}" target="_blank" class="text-white">View Aadhar</a>
+                                             <a href="{{ url('storage/' . $officeBearer->office_bearer_aadhar_file) }}" target="_blank" class="text-white">View Aadhar</a>
                                           </label>
                                           @else
                                           N/A
@@ -309,7 +309,7 @@ NGO || View Details
                                        <td>{{ $NgoPartThreeActRegistration->validity_date_one ?? 'N/A' }}</td>
                                        <td>@if(!empty($NgoPartThreeActRegistration->regd_certificate_file_one))
                                           <label class="badge bg-info">
-                                          <a href="{{ url('storage/' . $NgoPartThreeActRegistration->regd_certificate_file_one_path) }}" target="_blank" class="text-white">View Regd Certificate</a>
+                                             <a href="{{ url('storage/' . $NgoPartThreeActRegistration->regd_certificate_file_one_path) }}" target="_blank" class="text-white">View Regd Certificate</a>
                                           </label>
                                           @else
                                           N/A
@@ -324,7 +324,7 @@ NGO || View Details
                                        <td>{{ $NgoPartThreeActRegistration->validity_date_two ?? 'N/A' }}</td>
                                        <td>@if(!empty($NgoPartThreeActRegistration->regd_certificate_file_two))
                                           <label class="badge bg-info">
-                                          <a href="{{ url('storage/' . $NgoPartThreeActRegistration->regd_certificate_file_two_path) }}" target="_blank" class="text-white">View Regd Certificate</a>
+                                             <a href="{{ url('storage/' . $NgoPartThreeActRegistration->regd_certificate_file_two_path) }}" target="_blank" class="text-white">View Regd Certificate</a>
                                           </label>
                                           @else
                                           N/A
@@ -339,7 +339,7 @@ NGO || View Details
                                        <td>{{ $NgoPartThreeActRegistration->validity_date_three ?? 'N/A' }}</td>
                                        <td>@if(!empty($NgoPartThreeActRegistration->regd_certificate_file_three))
                                           <label class="badge bg-info">
-                                          <a href="{{ url('storage/' . $NgoPartThreeActRegistration->regd_certificate_file_three_path) }}" target="_blank" class="text-white">View Regd Certificate</a>
+                                             <a href="{{ url('storage/' . $NgoPartThreeActRegistration->regd_certificate_file_three_path) }}" target="_blank" class="text-white">View Regd Certificate</a>
                                           </label>
                                           @else
                                           N/A
@@ -354,7 +354,7 @@ NGO || View Details
                                        <td>{{ $NgoPartThreeActRegistration->validity_date_four ?? 'N/A' }}</td>
                                        <td>@if(!empty($NgoPartThreeActRegistration->regd_certificate_file_four))
                                           <label class="badge bg-info">
-                                          <a href="{{ url('storage/' . $NgoPartThreeActRegistration->regd_certificate_file_four_path) }}" target="_blank" class="text-white">View Regd Certificate</a>
+                                             <a href="{{ url('storage/' . $NgoPartThreeActRegistration->regd_certificate_file_four_path) }}" target="_blank" class="text-white">View Regd Certificate</a>
                                           </label>
                                           @else
                                           N/A
@@ -369,7 +369,7 @@ NGO || View Details
                                        <td>{{ $NgoPartThreeActRegistration->validity_date_five ?? 'N/A' }}</td>
                                        <td>@if(!empty($NgoPartThreeActRegistration->regd_certificate_file_five))
                                           <label class="badge bg-info">
-                                          <a href="{{ url('storage/' . $NgoPartThreeActRegistration->regd_certificate_file_five_path) }}" target="_blank" class="text-white">View Regd Certificate</a>
+                                             <a href="{{ url('storage/' . $NgoPartThreeActRegistration->regd_certificate_file_five_path) }}" target="_blank" class="text-white">View Regd Certificate</a>
                                           </label>
                                           @else
                                           N/A
@@ -384,7 +384,7 @@ NGO || View Details
                                        <td>{{ $NgoPartThreeActRegistration->validity_date_six ?? 'N/A' }}</td>
                                        <td>@if(!empty($NgoPartThreeActRegistration->regd_certificate_file_six))
                                           <label class="badge bg-info">
-                                          <a href="{{ url('storage/' . $NgoPartThreeActRegistration->regd_certificate_file_six_path) }}" target="_blank" class="text-white">View Regd Certificate</a>
+                                             <a href="{{ url('storage/' . $NgoPartThreeActRegistration->regd_certificate_file_six_path) }}" target="_blank" class="text-white">View Regd Certificate</a>
                                           </label>
                                           @else
                                           N/A
@@ -399,7 +399,7 @@ NGO || View Details
                                        <td>{{ $NgoPartThreeActRegistration->validity_date_seven ?? 'N/A' }}</td>
                                        <td>@if(!empty($NgoPartThreeActRegistration->regd_certificate_file_seven))
                                           <label class="badge bg-info">
-                                          <a href="{{ url('storage/' . $NgoPartThreeActRegistration->regd_certificate_file_seven_path) }}" target="_blank" class="text-white">View Regd Certificate</a>
+                                             <a href="{{ url('storage/' . $NgoPartThreeActRegistration->regd_certificate_file_seven_path) }}" target="_blank" class="text-white">View Regd Certificate</a>
                                           </label>
                                           @else
                                           N/A
@@ -414,7 +414,7 @@ NGO || View Details
                                        <td>{{ $NgoPartThreeActRegistration->validity_date_eight ?? 'N/A' }}</td>
                                        <td>@if(!empty($NgoPartThreeActRegistration->regd_certificate_file_eight))
                                           <label class="badge bg-info">
-                                          <a href="{{ url('storage/' . $NgoPartThreeActRegistration->regd_certificate_file_eight_path) }}" target="_blank" class="text-white">View Regd Certificate</a>
+                                             <a href="{{ url('storage/' . $NgoPartThreeActRegistration->regd_certificate_file_eight_path) }}" target="_blank" class="text-white">View Regd Certificate</a>
                                           </label>
                                           @else
                                           N/A
@@ -429,7 +429,7 @@ NGO || View Details
                                        <td>{{ $NgoPartThreeActRegistration->validity_date_nine ?? 'N/A' }}</td>
                                        <td>@if(!empty($NgoPartThreeActRegistration->regd_certificate_file_nine))
                                           <label class="badge bg-info">
-                                          <a href="{{ url('storage/' . $NgoPartThreeActRegistration->regd_certificate_file_nine_path) }}" target="_blank" class="text-white">View Regd Certificate</a>
+                                             <a href="{{ url('storage/' . $NgoPartThreeActRegistration->regd_certificate_file_nine_path) }}" target="_blank" class="text-white">View Regd Certificate</a>
                                           </label>
                                           @else
                                           N/A
@@ -444,7 +444,7 @@ NGO || View Details
                                        <td>{{ $NgoPartThreeActRegistration->validity_date_other ?? 'N/A' }}</td>
                                        <td>@if(!empty($NgoPartThreeActRegistration->regd_certificate_file_other))
                                           <label class="badge bg-info">
-                                          <a href="{{ url('storage/' . $NgoPartThreeActRegistration->regd_certificate_file_other_path) }}" target="_blank" class="text-white">View Regd Certificate</a>
+                                             <a href="{{ url('storage/' . $NgoPartThreeActRegistration->regd_certificate_file_other_path) }}" target="_blank" class="text-white">View Regd Certificate</a>
                                           </label>
                                           @else
                                           N/A
@@ -557,7 +557,7 @@ NGO || View Details
                                        <td>
                                           @if(!empty($filePath))
                                           <label class="badge bg-info">
-                                          <a href="{{ url('storage/' . $filePath) }}" target="_blank" class="text-white">View {{ $label }} Document</a>
+                                             <a href="{{ url('storage/' . $filePath) }}" target="_blank" class="text-white">View {{ $label }} Document</a>
                                           </label>
                                           @else
                                           N/A
@@ -597,7 +597,7 @@ NGO || View Details
                                        <td>
                                           @if(!empty($auditFile))
                                           <label class="badge bg-info">
-                                          <a href="{{ url('storage/' . $auditFile) }}" target="_blank" class="text-white">View Audit Report</a>
+                                             <a href="{{ url('storage/' . $auditFile) }}" target="_blank" class="text-white">View Audit Report</a>
                                           </label>
                                           @else
                                           N/A
@@ -606,7 +606,7 @@ NGO || View Details
                                        <td>
                                           @if(!empty($itFile))
                                           <label class="badge bg-info">
-                                          <a href="{{ url('storage/' . $itFile) }}" target="_blank" class="text-white">View IT Return</a>
+                                             <a href="{{ url('storage/' . $itFile) }}" target="_blank" class="text-white">View IT Return</a>
                                           </label>
                                           @else
                                           N/A
@@ -642,7 +642,7 @@ NGO || View Details
                                        <td>
                                           @if(!empty($NgoRegistration->bank_account_file))
                                           <label class="badge bg-info">
-                                          <a href="{{ url('storage/' . $NgoRegistration->bank_account_file) }}" target="_blank" class="text-white">View Passbook</a>
+                                             <a href="{{ url('storage/' . $NgoRegistration->bank_account_file) }}" target="_blank" class="text-white">View Passbook</a>
                                           </label>
                                           @else
                                           N/A
@@ -657,34 +657,6 @@ NGO || View Details
                               @if(!empty($NgoRegistration->ngo_file_beneficiary))
                               <h5 class="card-title">List Of Beneficiaries Details of {{ !empty($NgoRegistration->ngo_org_name) ? $NgoRegistration->ngo_org_name : 'N/A' }} <label class="badge bg-info"><a href="{{ url('storage/' . $NgoRegistration->ngo_file_beneficiary) }}" target="_blank" class="text-white">View Documents</a></label></h5>
                               @endif
-                              <!-- <table class="table color-table info-table table-bordered fixed-table">
-                                 <thead>
-                                    <tr>
-                                       <th>Beneficiary Name</th>
-                                       <th>Gender</th>
-                                       <th>DOB</th>
-                                       <th>Qualification</th>
-                                       <th>Date of Association</th>
-                                       <th>Aadhar No</th>
-                                       <th>Mobile No</th>
-                                       <th>Date of Disorganization</th>
-                                    </tr>
-                                 </thead>
-                                 <tbody>
-                                    @foreach($NgoPartFiveListOfBeneficiary as $ngoBenf)
-                                    <tr>
-                                       <td>{{ $ngoBenf->beneficiary_name ?? 'N/A' }}</td>
-                                       <td>{{ $ngoBenf->gender ?? 'N/A' }}</td>
-                                       <td>{{ $ngoBenf->date_of_birth ?? 'N/A' }}</td>
-                                       <td>{{ $ngoBenf->qualification ?? 'N/A' }}</td>
-                                       <td>{{ $ngoBenf->date_of_association ?? 'N/A' }}</td>
-                                       <td>{{ $ngoBenf->aadhar_number ?? 'N/A' }}</td>
-                                       <td>{{ $ngoBenf->mobile_no ?? 'N/A' }}</td>
-                                       <td>{{ $ngoBenf->date_of_disorganization ?? 'N/A' }}</td>
-                                    </tr>
-                                    @endforeach
-                                 </tbody>
-                                 </table> -->
                               @if($NgoRegistration->no_of_form_completed == 6 && $NgoRegistration->dsso_assigned)
                               <hr>
                               <table class="table color-table info-table table-bordered fixed-table">
@@ -703,21 +675,22 @@ NGO || View Details
                                     @foreach ($stages as $stage)
                                     @php
                                     $assigned = $NgoRegistration->{$stage . '_assigned'};
-                                    $createdBy = $NgoRegistration->{$stage . '_created_by'};
+                                    $createdById = $NgoRegistration->{$stage . '_created_by'};
                                     $createdTime = $NgoRegistration->{$stage . '_created_time'};
                                     $remark = $NgoRegistration->{$stage . '_remark'};
                                     $file = $NgoRegistration->{$stage . '_inspection_report_file'};
                                     $date = $NgoRegistration->{$stage . '_created_date'};
+                                    $createdByUser = \App\Models\User::find($createdById);
                                     @endphp
-                                    @if ($assigned && $createdBy && $createdTime && $remark && $file)
+                                    @if ($assigned && $createdById && $createdTime && $remark && $file)
                                     <tr>
                                        <td>{{ $date ?? 'N/A' }}</td>
-                                       <td>{{ $createdBy ?? 'N/A' }}</td>
+                                       <td>{{ $createdByUser->name ?? 'N/A' }}</td>
                                        <td>{{ $remark ?? 'N/A' }}</td>
                                        <td>
                                           @if(!empty($file))
                                           <label class="badge bg-info">
-                                          <a href="{{ url('storage/' . $file) }}" target="_blank" class="text-white">View Passbook</a>
+                                             <a href="{{ url('storage/' . $file) }}" target="_blank" class="text-white">View Inspection Report</a>
                                           </label>
                                           @else
                                           N/A
@@ -794,7 +767,7 @@ NGO || View Details
                                                       </div>
                                                       <div class="modal-footer">
                                                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                         <button type="submit" class="btn btn-primary">Forward to Collector</button>
+                                                         <button type="submit" class="btn btn-primary">Submit</button>
                                                       </div>
                                                    </form>
                                                    @endif
@@ -802,9 +775,43 @@ NGO || View Details
                                              </div>
                                           </div>
                                           <!-- /.modal -->
+                                          {{-- DSSO Section --}}
+                                          @if(
+                                          auth()->user()->hasRole('DSSO') && (
+                                          ($NgoRegistration->no_of_form_completed == 6 && $NgoRegistration->dsso_assigned !== null && $NgoRegistration->application_stage_id == 2)
+                                          || $NgoRegistration->application_stage_id == 32
+                                          )
+                                          )
                                           <div class="card-body d-flex justify-content-center gap-2">
                                              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#remarksModal">Action</button>
                                           </div>
+                                          @endif
+
+                                          {{-- Collector Section --}}
+                                          @if(
+                                          auth()->user()->hasRole('Collector') && (
+                                          ($NgoRegistration->no_of_form_completed == 6 && $NgoRegistration->dsso_assigned !== null && $NgoRegistration->collector_assigned !== null && $NgoRegistration->application_stage_id == 9)
+                                          || $NgoRegistration->application_stage_id == 33
+                                          )
+                                          )
+                                          <div class="card-body d-flex justify-content-center gap-2">
+                                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#remarksModal">Action</button>
+                                          </div>
+                                          @endif
+
+                                          {{-- HO Section --}}
+                                          @if(
+                                          auth()->user()->hasRole('HO') && (
+                                          ($NgoRegistration->no_of_form_completed == 6 && $NgoRegistration->dsso_assigned !== null && $NgoRegistration->collector_assigned !== null &&
+                                          $NgoRegistration->ho_assigned !== null && $NgoRegistration->application_stage_id == 10)
+                                          || $NgoRegistration->application_stage_id == 34
+                                          )
+                                          )
+                                          <div class="card-body d-flex justify-content-center gap-2">
+                                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#remarksModal">Action</button>
+                                          </div>
+                                          @endif
+
                                        </div>
                                     </div>
                                  </div>
@@ -844,9 +851,9 @@ NGO || View Details
 <script>
    function printCardBody() {
       const content = document.querySelector('.card-body').cloneNode(true);
-   
+      
       const printWindow = window.open('', '', 'width=900,height=1000');
-   
+      
       if (printWindow) {
          printWindow.document.write(`
    <html>
@@ -893,10 +900,10 @@ NGO || View Details
    <body></body>
    </html>
          `);
-   
+         
          printWindow.document.body.appendChild(content);
          printWindow.document.close();
-   
+         
          printWindow.focus();
    /*Wait a short moment to ensure rendering is complete*/
          setTimeout(() => {
@@ -913,10 +920,10 @@ NGO || View Details
 <script>
    async function exportToPDF() {
       const { jsPDF } = window.jspdf;
-   
+      
    /*Select the content to export*/
       const element = document.getElementById('ngoDetailsToExport');
-   
+      
    /*Temporarily add header and footer*/
       const header = document.createElement('div');
       header.innerHTML = `
@@ -926,7 +933,7 @@ NGO || View Details
    </div>
       `;
       element.prepend(header);
-   
+      
       const footer = document.createElement('div');
       footer.innerHTML = `
    <div style="margin-top: 30px; text-align: center; font-size: 12px;">
@@ -934,25 +941,25 @@ NGO || View Details
    </div>
       `;
       element.appendChild(footer);
-   
+      
    /*Render the content to canvas*/
       const canvas = await html2canvas(element, { scale: 2, useCORS: true });
-   
+      
    /*Remove temp header/footer to restore original view*/
       header.remove();
       footer.remove();
-   
+      
    /*Get image data*/
       const imgData = canvas.toDataURL('image/png');
-   
+      
    /*Create PDF*/
       const pdf = new jsPDF('p', 'pt', 'a4');
       const pageWidth = 595.28;
       const pageHeight = 841.89;
-   
+      
       const imgProps = pdf.getImageProperties(imgData);
       const imgHeight = (imgProps.height * pageWidth) / imgProps.width;
-   
+      
       if (imgHeight <= pageHeight) {
          pdf.addImage(imgData, 'PNG', 0, 0, pageWidth, imgHeight);
       } else {
@@ -966,7 +973,7 @@ NGO || View Details
             if (heightLeft > 0) pdf.addPage();
          }
       }
-   
+      
    /*Save the PDF*/
       pdf.save('NGO_Details.pdf');
    }
@@ -988,17 +995,17 @@ NGO || View Details
       const file = input.files[0];
       const fieldName = input.name;
       let errorDiv = document.querySelector(`.${fieldName}_error`);
-   
+      
       if (!errorDiv) {
          errorDiv = document.createElement("div");
          errorDiv.classList.add("text-danger", "mt-1", `${fieldName}_error`);
          input.parentElement.appendChild(errorDiv);
       }
-   
+      
       errorDiv.innerHTML = "";
-   
+      
       if (!file) return;
-   
+      
       if (file.type !== allowedFileType) {
          Swal.fire({
             icon: "error",
@@ -1009,7 +1016,7 @@ NGO || View Details
          input.value = "";
          return;
       }
-   
+      
       if (file.size > maxFileSize) {
          Swal.fire({
             icon: "error",
@@ -1024,30 +1031,30 @@ NGO || View Details
    
    function Validate() {
       let isValid = true;
-   
+      
       const remark = document.getElementById("remark_data");
       const file = document.getElementById("inspection_report_file");
       const select = document.getElementById("remarks_type");
-   
+      
       document.querySelector(".remark_error_data").innerHTML = "";
       document.querySelector(".inspection_report_file_error").innerHTML = "";
       document.querySelector(".remarks_type_error").innerHTML = "";
-   
+      
       if (!select.value) {
          document.querySelector(".remarks_type_error").innerHTML = "Please select an option.";
          isValid = false;
       }
-   
+      
       if (!remark.value.trim()) {
          document.querySelector(".remark_error_data").innerHTML = "Remarks field is required.";
          isValid = false;
       }
-   
+      
       if (!file.files[0]) {
          document.querySelector(".inspection_report_file_error").innerHTML = "Please upload the inspection report file.";
          isValid = false;
       }
-   
+      
       return isValid;
    }
 </script>

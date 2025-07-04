@@ -1671,9 +1671,13 @@ public function dsso_remarks(Request $request, string $id)
             $stageId = 9;
             $stageName = 'Forwarded to Collector';
         } elseif ($validatedData['remarks_type'] == 6) {
-            $ngo_tbl_records->application_stage_id = 17;
-            $stageId = 17;
+            $ngo_tbl_records->application_stage_id = 18;
+            $stageId = 18;
             $stageName = 'Rejected by DSSO';
+        } elseif ($validatedData['remarks_type'] == 7) {
+            $ngo_tbl_records->application_stage_id = 30;
+            $stageId = 30;
+            $stageName = 'Reverted by DSSO';
         } else {
             return redirect()->back()->with('warning', "Please select the appropriate option!");
         }
@@ -1694,7 +1698,7 @@ public function dsso_remarks(Request $request, string $id)
             'created_by_ip_v_six' => $ip_v6,
         ]);
 
-        return redirect()->route('admin.ngo.index')->with('success', "Application Updated");
+        return redirect()->route('admin.ngo.index')->with('success', "Application Updated.");
 
     } elseif ($role == 'Collector') {
         $ngo_tbl_records->collector_remarks_type = $validatedData['remarks_type'];
@@ -1707,12 +1711,16 @@ public function dsso_remarks(Request $request, string $id)
         if ($validatedData['remarks_type'] == 2) {
             $ngo_tbl_records->application_stage_id = 10;
             $ngo_tbl_records->ho_assigned = User::role('HO')->where('department_section_id', 6)->value('id');
-            $stageId = 11;
-            $stageName = 'Forwarded to BO';
+            $stageId = 10;
+            $stageName = 'Forwarded to HO';
         } elseif ($validatedData['remarks_type'] == 6) {
-            $ngo_tbl_records->application_stage_id = 19;
-            $stageId = 19;
+            $ngo_tbl_records->application_stage_id = 20;
+            $stageId = 20;
             $stageName = 'Rejected by Collector';
+        } elseif ($validatedData['remarks_type'] == 7) {
+            $ngo_tbl_records->application_stage_id = 32;
+            $stageId = 32;
+            $stageName = 'Reverted by Collector';
         } else {
             return redirect()->back()->with('warning', "Please select the appropriate option!");
         }
@@ -1733,7 +1741,49 @@ public function dsso_remarks(Request $request, string $id)
             'created_by_ip_v_six' => $ip_v6,
         ]);
 
-        return redirect()->route('admin.ngo.index')->with('success', "Application Updated");
+        return redirect()->route('admin.ngo.index')->with('success', "Application Updated.");
+    } elseif ($role == 'HO') {
+        $ngo_tbl_records->ho_remarks_type = $validatedData['remarks_type'];
+        $ngo_tbl_records->ho_inspection_report_file = $inspectionFilePath;
+        $ngo_tbl_records->ho_remark = $validatedData['remark_data'];
+        $ngo_tbl_records->ho_created_by = Auth::id();
+        $ngo_tbl_records->ho_created_date = $currentDate;
+        $ngo_tbl_records->ho_created_time = $currentTime;
+
+        if ($validatedData['remarks_type'] == 3) {
+            $ngo_tbl_records->application_stage_id = 11;
+            $ngo_tbl_records->bo_assigned = User::role('BO')->where('department_section_id', 6)->value('id');
+            $stageId = 11;
+            $stageName = 'Forwarded to BO';
+        } elseif ($validatedData['remarks_type'] == 6) {
+            $ngo_tbl_records->application_stage_id = 22;
+            $stageId = 22;
+            $stageName = 'Rejected by HO';
+        } elseif ($validatedData['remarks_type'] == 7) {
+            $ngo_tbl_records->application_stage_id = 33;
+            $stageId = 33;
+            $stageName = 'Reverted by HO';
+        } else {
+            return redirect()->back()->with('warning', "Please select the appropriate option!");
+        }
+
+        $ngo_tbl_records->save();
+
+        ApplicationStageHistory::create([
+            'department_scheme_id' => 1,
+            'model_name' => 'NgoRegistration',
+            'model_table_id' => $ngo_tbl_records->id,
+            'stage_id' => $stageId,
+            'stage_name' => $stageName,
+            'created_date' => $currentDate,
+            'created_time' => $currentTime,
+            'created_by' => Auth::id(),
+            'created_by_remarks' => $validatedData['remark_data'],
+            'created_by_ip_v_four' => $ip_v4,
+            'created_by_ip_v_six' => $ip_v6,
+        ]);
+
+        return redirect()->route('admin.ngo.index')->with('success', "Application Updated.");
     } else {
         return redirect()->back()->with('warning', "You have no access!");
     }

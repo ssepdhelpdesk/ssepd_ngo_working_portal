@@ -1,0 +1,56 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+
+class ApplicationStageSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        $applicationstages = [
+            ['stage_id' => 1, 'stage_name' => 'Pending for final submit'],
+            ['stage_id' => 2, 'stage_name' => 'Application Applied Successfully'],
+            ['stage_id' => 3, 'stage_name' => 'Forwarded to BSSO'],
+            ['stage_id' => 4, 'stage_name' => 'Forwarded to BDO'],
+            ['stage_id' => 5, 'stage_name' => 'Forwarded to Tahasildar'],
+            ['stage_id' => 6, 'stage_name' => 'Forwarded to SSSO'],
+            ['stage_id' => 7, 'stage_name' => 'Forwarded to DSSO'],
+            ['stage_id' => 8, 'stage_name' => 'Forwarded to SubCollector'],
+            ['stage_id' => 9, 'stage_name' => 'Forwarded to Collector'],
+            ['stage_id' => 10, 'stage_name' => 'Forwarded to HO'],
+            ['stage_id' => 11, 'stage_name' => 'Forwarded to BO'],
+            ['stage_id' => 12, 'stage_name' => 'Forwarded to Director'],
+            ['stage_id' => 13, 'stage_name' => 'Forwarded to Secretary'],
+            ['stage_id' => 14, 'stage_name' => 'Rejected by BSSO'],
+            ['stage_id' => 15, 'stage_name' => 'Rejected by BDO'],
+            ['stage_id' => 16, 'stage_name' => 'Rejected by Tahasildar'],
+            ['stage_id' => 17, 'stage_name' => 'Rejected by SSSO'],
+            ['stage_id' => 18, 'stage_name' => 'Rejected by DSSO'],
+            ['stage_id' => 19, 'stage_name' => 'Rejected by SubCollector'],
+            ['stage_id' => 20, 'stage_name' => 'Rejected by Collector'],
+            ['stage_id' => 21, 'stage_name' => 'Rejected by HO'],
+            ['stage_id' => 22, 'stage_name' => 'Rejected by BO'],
+            ['stage_id' => 23, 'stage_name' => 'Rejected by Director'],
+            ['stage_id' => 24, 'stage_name' => 'Rejected by Secretary'],
+            ['stage_id' => 25, 'stage_name' => 'Approved'],
+        ];
+
+        $applicationstagesData = [];
+        
+        foreach ($applicationstages as $applicationstage) {
+            $applicationstagesData[] = array_merge($applicationstage, [
+                'status' => 1,
+                'created_at' => Carbon::now('Asia/Kolkata'),
+                'updated_at' => Carbon::now('Asia/Kolkata'),
+            ]);
+        }
+
+        DB::table('application_stages')->insert($applicationstagesData);
+    }
+}

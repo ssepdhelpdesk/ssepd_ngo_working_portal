@@ -137,7 +137,14 @@ Route::group(['middleware' => ['auth', 'prevent-back-history', 'track.session', 
         Route::get('check-trained-staff-aadhar-no', 'check_trained_staff_aadhar_no')->name('check_trained_staff_aadhar_no');
         Route::get('check-pan-no-of-office-bearer', 'check_pan_no_of_office_bearer')->name('check_pan_no_of_office_bearer');
         Route::get('check-aadhar-no-of-office-bearer', 'check_aadhar_no_of_office_bearer')->name('check_aadhar_no_of_office_bearer');
-        Route::post('{id}/dsso_remarks', 'dsso_remarks')->name('dsso_remarks');
+        Route::post('{id}/executive_remarks', 'executive_remarks')->name('executive_remarks');
+        Route::get('{id}/edit_ngo_application', 'edit_ngo_application')->name('edit_ngo_application');
+        Route::post('{id}/update_ngo_application_part_one', 'update_ngo_application_part_one')->name('update_ngo_application_part_one');
+
+        Route::get('/update_ngo_application_part_two_get_office_bearer', 'update_ngo_application_part_two_get_office_bearer')->name('update_ngo_application_part_two_get_office_bearer');
+        Route::post('/update_ngo_application_part_two_update_office_bearer', 'update_ngo_application_part_two_update_office_bearer')->name('update_ngo_application_part_two_update_office_bearer');
+        Route::get('{id}/update_ngo_application_part_two_add_another_office_bearer', 'update_ngo_application_part_two_add_another_office_bearer')->name('update_ngo_application_part_two_add_another_office_bearer');
+        Route::post('{id}/update_ngo_application_part_two_store_another_office_bearer', 'update_ngo_application_part_two_store_another_office_bearer')->name('update_ngo_application_part_two_store_another_office_bearer');
     });
 
     Route::get('/get-address-type-content/{type}', function ($type) {

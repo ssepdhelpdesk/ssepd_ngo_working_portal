@@ -50,6 +50,7 @@ class ApplicationStageSeeder extends Seeder
             ['stage_id' => 34, 'stage_name' => 'Reverted by BO'],
             ['stage_id' => 35, 'stage_name' => 'Reverted by Director'],
             ['stage_id' => 36, 'stage_name' => 'Reverted by Secretary'],
+            ['stage_id' => 37, 'stage_name' => 'Application updated by User'],
         ];
 
         $applicationstagesData = [];

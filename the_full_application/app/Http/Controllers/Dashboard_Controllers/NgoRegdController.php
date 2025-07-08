@@ -276,6 +276,7 @@ public function part_one_store(Request $request)
         $applicationstagehistory->department_scheme_id = 1;
         $applicationstagehistory->model_name = 'NgoRegistration';
         $applicationstagehistory->model_table_id = $NgoRegistration->id;
+        $applicationstagehistory->initial_model_table_id = $NgoRegistration->id;
         $applicationstagehistory->stage_id = 1;
         $applicationstagehistory->stage_name = 'Pending for final submit';
         $applicationstagehistory->created_date = now()->setTimezone('Asia/Kolkata')->toDateString();
@@ -592,6 +593,7 @@ public function part_one_after_initial_store(Request $request)
         $applicationstagehistory->department_scheme_id = 1;
         $applicationstagehistory->model_name = 'NgoRegistration';
         $applicationstagehistory->model_table_id = $NgoRegistration->id;
+        $applicationstagehistory->initial_model_table_id = $NgoRegistration->id;
         $applicationstagehistory->stage_id = 1;
         $applicationstagehistory->stage_name = 'Pending for final submit';
         $applicationstagehistory->created_date = now()->setTimezone('Asia/Kolkata')->toDateString();
@@ -714,6 +716,7 @@ public function part_two_store(Request $request)
         $applicationstagehistory->department_scheme_id = 1;
         $applicationstagehistory->model_name = 'NgoPartTwoOfficeBearer';
         $applicationstagehistory->model_table_id = $NgoPartTwoOfficeBearer->id;
+        $applicationstagehistory->initial_model_table_id = $ngo_tbl_records->id;
         $applicationstagehistory->stage_id = 1;
         $applicationstagehistory->stage_name = 'Pending for final submit';
         $applicationstagehistory->created_date = now()->setTimezone('Asia/Kolkata')->toDateString();
@@ -894,6 +897,7 @@ public function part_three_store(Request $request)
         $applicationstagehistory->department_scheme_id = 1;
         $applicationstagehistory->model_name = 'NgoPartThreeActRegistration';
         $applicationstagehistory->model_table_id = $NgoPartThreeActRegistration->id;
+        $applicationstagehistory->initial_model_table_id = $ngo_tbl_records->id;
         $applicationstagehistory->stage_id = 1;
         $applicationstagehistory->stage_name = 'Pending for final submit';
         $applicationstagehistory->created_date = now()->setTimezone('Asia/Kolkata')->toDateString();
@@ -993,6 +997,7 @@ public function part_four_store(Request $request)
         $applicationstagehistory->department_scheme_id = 1;
         $applicationstagehistory->model_name = 'NgoPartFourOtherRecognition';
         $applicationstagehistory->model_table_id = $lastNgoPartFourOtherRecognition->id;
+        $applicationstagehistory->initial_model_table_id = $ngo_tbl_records->id;
         $applicationstagehistory->stage_id = 1;
         $applicationstagehistory->stage_name = 'Pending for final submit';
         $applicationstagehistory->created_date = now()->setTimezone('Asia/Kolkata')->toDateString();
@@ -1034,6 +1039,7 @@ public function part_four_store(Request $request)
         $applicationstagehistory->department_scheme_id = 1;
         $applicationstagehistory->model_name = 'NgoPartFourTrainedStaff';
         $applicationstagehistory->model_table_id = $lastNgoPartFourTrainedStaff->id;
+        $applicationstagehistory->initial_model_table_id = $ngo_tbl_records->id;
         $applicationstagehistory->stage_id = 1;
         $applicationstagehistory->stage_name = 'Pending for final submit';
         $applicationstagehistory->created_date = now()->setTimezone('Asia/Kolkata')->toDateString();
@@ -1098,6 +1104,7 @@ public function part_five_store(Request $request)
         $applicationstagehistory->department_scheme_id = 1;
         $applicationstagehistory->model_name = 'NgoPartFiveListOfBeneficiaryImport';
         $applicationstagehistory->model_table_id = $lastNgoPartFiveListOfBeneficiaryImport?->id;
+        $applicationstagehistory->initial_model_table_id = $ngo_tbl_records->id;
         $applicationstagehistory->stage_id = 1;
         $applicationstagehistory->stage_name = 'Pending for final submit';
         $applicationstagehistory->created_date = now()->setTimezone('Asia/Kolkata')->toDateString();
@@ -1485,6 +1492,7 @@ public function part_six_store(Request $request)
         $applicationstagehistory->department_scheme_id = 1;
         $applicationstagehistory->model_name = 'NgoPartSixAssetOrganization';
         $applicationstagehistory->model_table_id = $NgoPartSixAssetOrganization->id;
+        $applicationstagehistory->initial_model_table_id = $ngo_tbl_records->id;
         $applicationstagehistory->stage_id = 1;
         $applicationstagehistory->stage_name = 'Pending for final submit';
         $applicationstagehistory->created_date = now()->setTimezone('Asia/Kolkata')->toDateString();
@@ -1500,6 +1508,7 @@ public function part_six_store(Request $request)
         $applicationstagehistory->department_scheme_id = 1;
         $applicationstagehistory->model_name = 'NgoPartSixFinancialStatus';
         $applicationstagehistory->model_table_id = $NgoPartSixFinancialStatus->id;
+        $applicationstagehistory->initial_model_table_id = $ngo_tbl_records->id;
         $applicationstagehistory->stage_id = 2;
         $applicationstagehistory->stage_name = 'Application Applied Successfully';
         $applicationstagehistory->created_date = now()->setTimezone('Asia/Kolkata')->toDateString();
@@ -1580,6 +1589,7 @@ public function view_ngo_application(string $id)
     $NgoPartSixFinancialStatus = NgoPartSixFinancialStatus::where('ngo_tbl_id', $id)->first();
     $user = User::find($NgoRegistration->user_table_id);
     $bankMaster = BankMaster::where('bank_id', $NgoRegistration->ifsc_code)->first();
+    $applicationStageHistory = ApplicationStageHistory::with('creator')->where('department_scheme_id', 1)->where('initial_model_table_id', $id)->where('stage_id', '>=', 2)->get();
 
     return view('dashboard.ngo.view_ngo', compact(
         'NgoRegistration',
@@ -1590,6 +1600,7 @@ public function view_ngo_application(string $id)
         'NgoPartFiveListOfBeneficiary',
         'NgoPartSixAssetOrganization',
         'NgoPartSixFinancialStatus',
+        'applicationStageHistory',
         'user',
         'bankMaster',
         'ngo_id'
@@ -1621,171 +1632,623 @@ public function check_aadhar_no_of_office_bearer(Request $request): JsonResponse
 /**
 * Show the form for editing the specified resource.
 */
-public function dsso_remarks(Request $request, string $id)
+public function executive_remarks(Request $request, string $id)
 {
     $validationRules = [
         'remarks_type' => 'required|in:1,2,3,4,5,6,7',
-        'inspection_report_file' => 'required|file|mimes:pdf|max:2048',
+        'inspection_report_file' => ['required_if:remarks_type,1,2,3,4,5', 'file', 'mimes:pdf', 'max:2048',],
         'remark_data' => 'required',
     ];
-
-    $addressMessage = '';
+    
     $validatedData = $request->validate($validationRules);
-    $loggedin_user = Auth::user();
-    $role = $loggedin_user->getRoleNames()->first();
-    $ngo_tbl_records = NgoRegistration::findOrFail($request->id);
-    $ngoSystemGenRegNo = str_replace('/', '_', $ngo_tbl_records->ngo_system_gen_reg_no);
-    $folderPath = public_path("ngo_files/{$ngoSystemGenRegNo}");
-    /*A folder i.e. storage/ngo_files is created inside the root directory ssepd_ngo_working_portal/storage/ngo_files*/
-    $externalBasePath = dirname(base_path());
-    $externalPath = $externalBasePath . "/storage/ngo_files/{$ngoSystemGenRegNo}";
-    if (!file_exists($folderPath)) { mkdir($folderPath, 0755, true); }
-    if (!file_exists($externalPath)) { mkdir($externalPath, 0755, true); }
-    if ($request->hasFile('inspection_report_file')) {
-        $inspectionFile = $request->file('inspection_report_file');
-        $inspectionExtension = $inspectionFile->getClientOriginalExtension();
-        $inspectionRandomName = $role . '_inspection_report_file_' . Str::random(10) . '_' . now()->format('Ymd_His') . '_' . '.' . $inspectionExtension;
+    DB::beginTransaction();
+    try{
+        $addressMessage = '';
+        $loggedin_user = Auth::user();
+        $role = $loggedin_user->getRoleNames()->first();
+        $ngo_tbl_records = NgoRegistration::findOrFail($request->id);
+        $ngoSystemGenRegNo = str_replace('/', '_', $ngo_tbl_records->ngo_system_gen_reg_no);
+        $folderPath = public_path("ngo_files/{$ngoSystemGenRegNo}");
+        /*A folder i.e. storage/ngo_files is created inside the root directory ssepd_ngo_working_portal/storage/ngo_files*/
+        $externalBasePath = dirname(base_path());
+        $externalPath = $externalBasePath . "/storage/ngo_files/{$ngoSystemGenRegNo}";
+        if (!file_exists($folderPath)) { mkdir($folderPath, 0755, true); }
+        if (!file_exists($externalPath)) { mkdir($externalPath, 0755, true); }
+        if ($request->hasFile('inspection_report_file')) {
+            $inspectionFile = $request->file('inspection_report_file');
+            $inspectionExtension = $inspectionFile->getClientOriginalExtension();
+            $inspectionRandomName = $role . '_inspection_report_file_' . Str::random(10) . '_' . now()->format('Ymd_His') . '_' . '.' . $inspectionExtension;
 
-        $inspectionFilePath = $inspectionFile->storeAs("ngo_files/{$ngoSystemGenRegNo}", $inspectionRandomName, 'public');
-        copy(storage_path("app/public/{$inspectionFilePath}"), "{$folderPath}/{$inspectionRandomName}");
-        copy(storage_path("app/public/{$inspectionFilePath}"), "{$externalPath}/{$inspectionRandomName}");
+            $inspectionFilePath = $inspectionFile->storeAs("ngo_files/{$ngoSystemGenRegNo}", $inspectionRandomName, 'public');
+            copy(storage_path("app/public/{$inspectionFilePath}"), "{$folderPath}/{$inspectionRandomName}");
+            copy(storage_path("app/public/{$inspectionFilePath}"), "{$externalPath}/{$inspectionRandomName}");
+        }
+
+        $ipAddress = request()->ip();
+        $ip_v4 = filter_var($ipAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) ? $ipAddress : null;
+        $ip_v6 = filter_var($ipAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) ? $ipAddress : null;
+        $currentDate = now()->setTimezone('Asia/Kolkata')->toDateString();
+        $currentTime = now()->setTimezone('Asia/Kolkata')->toTimeString();
+
+        if ($role == 'DSSO') {
+            $ngo_tbl_records->dsso_remarks_type = $validatedData['remarks_type'];
+            $ngo_tbl_records->dsso_inspection_report_file = $inspectionFilePath;
+            $ngo_tbl_records->dsso_remark = $validatedData['remark_data'];
+            $ngo_tbl_records->dsso_created_by = Auth::id();
+            $ngo_tbl_records->dsso_created_date = $currentDate;
+            $ngo_tbl_records->dsso_created_time = $currentTime;
+
+            if ($validatedData['remarks_type'] == 1) {
+                $ngo_tbl_records->application_stage_id = 9;
+                $ngo_tbl_records->collector_assigned = User::role('Collector')->where('posted_district', $ngo_tbl_records->district_id)->value('id');
+                $stageId = 9;
+                $stageName = 'Forwarded to Collector';
+            } elseif ($validatedData['remarks_type'] == 6) {
+                $ngo_tbl_records->application_stage_id = 18;
+                $stageId = 18;
+                $stageName = 'Rejected by DSSO';
+            } elseif ($validatedData['remarks_type'] == 7) {
+                $ngo_tbl_records->application_stage_id = 30;
+                $stageId = 30;
+                $stageName = 'Reverted by DSSO';
+            } else {
+                return redirect()->back()->with('warning', "Please select the appropriate option!");
+            }
+
+            $ngo_tbl_records->save();
+
+            ApplicationStageHistory::create([
+                'department_scheme_id' => 1,
+                'model_name' => 'NgoRegistration',
+                'model_table_id' => $ngo_tbl_records->id,
+                'initial_model_table_id' => $ngo_tbl_records->id,
+                'stage_id' => $stageId,
+                'stage_name' => $stageName,
+                'created_date' => $currentDate,
+                'created_time' => $currentTime,
+                'created_by' => Auth::id(),
+                'created_by_remarks' => $validatedData['remark_data'],
+                'created_by_inspection_report_file' => $ngo_tbl_records->dsso_inspection_report_file,
+                'created_by_ip_v_four' => $ip_v4,
+                'created_by_ip_v_six' => $ip_v6,
+            ]);
+
+            return redirect()->route('admin.ngo.index')->with('success', "Application Updated.");
+
+        } elseif ($role == 'Collector') {
+            $ngo_tbl_records->collector_remarks_type = $validatedData['remarks_type'];
+            $ngo_tbl_records->collector_inspection_report_file = $inspectionFilePath;
+            $ngo_tbl_records->collector_remark = $validatedData['remark_data'];
+            $ngo_tbl_records->collector_created_by = Auth::id();
+            $ngo_tbl_records->collector_created_date = $currentDate;
+            $ngo_tbl_records->collector_created_time = $currentTime;
+
+            if ($validatedData['remarks_type'] == 2) {
+                $ngo_tbl_records->application_stage_id = 10;
+                $ngo_tbl_records->ho_assigned = User::role('HO')->where('department_section_id', 6)->value('id');
+                $stageId = 10;
+                $stageName = 'Forwarded to HO';
+            } elseif ($validatedData['remarks_type'] == 6) {
+                $ngo_tbl_records->application_stage_id = 20;
+                $stageId = 20;
+                $stageName = 'Rejected by Collector';
+            } elseif ($validatedData['remarks_type'] == 7) {
+                $ngo_tbl_records->application_stage_id = 32;
+                $stageId = 32;
+                $stageName = 'Reverted by Collector';
+            } else {
+                return redirect()->back()->with('warning', "Please select the appropriate option!");
+            }
+
+            $ngo_tbl_records->save();
+
+            ApplicationStageHistory::create([
+                'department_scheme_id' => 1,
+                'model_name' => 'NgoRegistration',
+                'model_table_id' => $ngo_tbl_records->id,
+                'initial_model_table_id' => $ngo_tbl_records->id,
+                'stage_id' => $stageId,
+                'stage_name' => $stageName,
+                'created_date' => $currentDate,
+                'created_time' => $currentTime,
+                'created_by' => Auth::id(),
+                'created_by_remarks' => $validatedData['remark_data'],
+                'created_by_inspection_report_file' => $ngo_tbl_records->collector_inspection_report_file,
+                'created_by_ip_v_four' => $ip_v4,
+                'created_by_ip_v_six' => $ip_v6,
+            ]);
+
+            return redirect()->route('admin.ngo.index')->with('success', "Application Updated.");
+        } elseif ($role == 'HO') {
+            $ngo_tbl_records->ho_remarks_type = $validatedData['remarks_type'];
+            $ngo_tbl_records->ho_inspection_report_file = $inspectionFilePath;
+            $ngo_tbl_records->ho_remark = $validatedData['remark_data'];
+            $ngo_tbl_records->ho_created_by = Auth::id();
+            $ngo_tbl_records->ho_created_date = $currentDate;
+            $ngo_tbl_records->ho_created_time = $currentTime;
+
+            if ($validatedData['remarks_type'] == 3) {
+                $ngo_tbl_records->application_stage_id = 11;
+                $ngo_tbl_records->bo_assigned = User::role('BO')->where('department_section_id', 6)->value('id');
+                $stageId = 11;
+                $stageName = 'Forwarded to BO';
+            } elseif ($validatedData['remarks_type'] == 6) {
+                $ngo_tbl_records->application_stage_id = 22;
+                $stageId = 22;
+                $stageName = 'Rejected by HO';
+            } elseif ($validatedData['remarks_type'] == 7) {
+                $ngo_tbl_records->application_stage_id = 33;
+                $stageId = 33;
+                $stageName = 'Reverted by HO';
+            } else {
+                return redirect()->back()->with('warning', "Please select the appropriate option!");
+            }
+
+            $ngo_tbl_records->save();
+
+            ApplicationStageHistory::create([
+                'department_scheme_id' => 1,
+                'model_name' => 'NgoRegistration',
+                'model_table_id' => $ngo_tbl_records->id,
+                'initial_model_table_id' => $ngo_tbl_records->id,
+                'stage_id' => $stageId,
+                'stage_name' => $stageName,
+                'created_date' => $currentDate,
+                'created_time' => $currentTime,
+                'created_by' => Auth::id(),
+                'created_by_remarks' => $validatedData['remark_data'],
+                'created_by_inspection_report_file' => $ngo_tbl_records->ho_inspection_report_file,
+                'created_by_ip_v_four' => $ip_v4,
+                'created_by_ip_v_six' => $ip_v6,
+            ]);
+
+            DB::commit();
+            return redirect()->route('admin.ngo.index')->with('success', "Application Updated.");
+        } else {
+            return redirect()->back()->with('warning', "You have no access!");
+        }
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return redirect()->back()->with('error', 'Something went wrong. Please try again.')->withInput();
+    }
+}
+
+public function edit_ngo_application(Request $request, string $id)
+{
+    $categories = NgoCategory::where('status', 1)->get();
+    $NgoRegistration = NgoRegistration::with(['state', 'district', 'block', 'grampanchayat', 'village', 'municipality'])->findOrFail($id);
+    $NgoPartTwoOfficeBearer = NgoPartTwoOfficeBearer::where('ngo_tbl_id', $id)->orderBy('office_bearer_designation', 'ASC')->get();
+    $NgoPartThreeActRegistration = NgoPartThreeActRegistration::where('ngo_tbl_id', $id)->first();
+    $NgoPartFourOtherRecognition = NgoPartFourOtherRecognition::where('ngo_tbl_id', $id)->get();
+    $NgoPartFourTrainedStaff = NgoPartFourTrainedStaff::where('ngo_tbl_id', $id)->get();
+    $NgoPartFiveListOfBeneficiary = NgoPartFiveListOfBeneficiary::where('ngo_tbl_id', $id)->get();
+    $NgoPartSixAssetOrganization = NgoPartSixAssetOrganization::where('ngo_tbl_id', $id)->first();
+    $NgoPartSixFinancialStatus = NgoPartSixFinancialStatus::where('ngo_tbl_id', $id)->first();
+    $user = User::find($NgoRegistration->user_table_id);
+    $bankMaster = BankMaster::where('bank_id', $NgoRegistration->ifsc_code)->first();
+    return view('dashboard.ngo.edit', compact(
+        'categories',
+        'NgoRegistration',
+        'NgoPartTwoOfficeBearer',
+        'NgoPartThreeActRegistration',
+        'NgoPartFourOtherRecognition',
+        'NgoPartFourTrainedStaff',
+        'NgoPartFiveListOfBeneficiary',
+        'NgoPartSixAssetOrganization',
+        'NgoPartSixFinancialStatus',
+        'user',
+        'bankMaster',
+    ));
+}
+
+public function update_ngo_application_part_one(Request $request, string $id)
+{
+    $validationRules = [
+        'ngo_registration_type' => 'required|in:1,2',
+        'ngo_category' => 'required|exists:ngo_categories,id',
+        'ngo_org_name' => 'required|string|max:255',
+        'ngo_org_pan' => 'required|string|max:20',
+        'ngo_org_email' => 'required|email|max:255',
+        'ngo_org_phone' => 'required|string|max:15',
+        'ngo_org_website' => 'required|regex:/^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/|max:255',
+        'ngo_registered_with' => 'required|in:1,2,3,4,5,6,7,8,9,10',
+        'ngo_other_reg_act' => 'nullable|required_if:ngo_registered_with,10|string|max:255',
+        'ngo_type_of_vo_or_ngo' => 'required|in:1,2,3,4,5,6',
+        'ngo_reg_no' => 'required|string|max:100',
+        'ngo_date_of_registration' => 'required|date',
+        'ngo_date_of_registration_validity' => 'required|date|after:ngo_date_of_registration',
+        'nature_of_organisation' => 'required|array|min:1',
+        'nature_of_organisation.*' => 'in:1,2,3,4,5,6',
+        'nature_of_organisation_other' => 'nullable|required_if:nature_of_organisation.5,6|string|max:255',
+        'ngo_organisation_type' => 'required|in:1,2',
+        'ngo_parent_organisation' => 'nullable|string|max:255',
+        'ngo_reg_velidity_available' => 'required|in:0,1',
+        'ngo_org_pan_file' => 'nullable|file|mimes:pdf|max:2048',
+        'ngo_file_rc' => 'nullable|file|mimes:pdf|max:2048',
+        'ngo_file_byelaws' => 'nullable|file|mimes:pdf|max:2048',
+    ];
+
+    $validatedData = $request->validate($validationRules);
+
+    DB::beginTransaction();
+    try{
+        $ngo_tbl_records = NgoRegistration::findOrFail($id);
+
+        if (!$ngo_tbl_records) {
+            return redirect()->back()->with('error', 'NGO record not found.');
+        }
+
+        $ngoSystemGeneratedRegNo = $ngo_tbl_records->ngo_system_gen_reg_no;
+        $ngoSystemGenRegNo = str_replace('/', '_', $ngoSystemGeneratedRegNo);
+
+        $folderPath = public_path("ngo_files/{$ngoSystemGenRegNo}");
+        /*A folder i.e. storage/ngo_files is created inside the root directory ssepd_ngo_working_portal/storage/ngo_files*/
+        $externalBasePath = dirname(base_path());
+        $externalPath = $externalBasePath . "/storage/ngo_files/{$ngoSystemGenRegNo}";
+
+        if (!file_exists($folderPath)) {
+            mkdir($folderPath, 0755, true);
+        }
+        if (!file_exists($externalPath)) {
+            mkdir($externalPath, 0755, true);
+        }
+
+        if ($request->hasFile('ngo_org_pan_file')) {
+            $panFile = $request->file('ngo_org_pan_file');
+            $panExtension = $panFile->getClientOriginalExtension();
+            $panRandomName = 'NGO_PAN_' . Str::random(10) . '_' . now()->format('Ymd_His') . '_' . '.' . $panExtension;
+
+            $panStoredPath = $panFile->storeAs("ngo_files/{$ngoSystemGenRegNo}", $panRandomName, 'public');
+            copy(storage_path("app/public/{$panStoredPath}"), "{$folderPath}/{$panRandomName}");
+            copy(storage_path("app/public/{$panStoredPath}"), "{$externalPath}/{$panRandomName}");
+        }
+
+        if ($request->hasFile('ngo_file_rc')) {
+            $rcFile = $request->file('ngo_file_rc');
+            $rcExtension = $rcFile->getClientOriginalExtension();
+            $rcRandomName = 'NGO_RC_' . Str::random(10) . '_' . now()->format('Ymd_His') . '_' . '.' . $rcExtension;
+
+            $rcStoredPath = $rcFile->storeAs("ngo_files/{$ngoSystemGenRegNo}", $rcRandomName, 'public');
+            copy(storage_path("app/public/{$rcStoredPath}"), "{$folderPath}/{$rcRandomName}");
+            copy(storage_path("app/public/{$rcStoredPath}"), "{$externalPath}/{$rcRandomName}");
+        }
+
+        if ($request->hasFile('ngo_file_byelaws')) {
+            $byelawsFile = $request->file('ngo_file_byelaws');
+            $rcExtension = $byelawsFile->getClientOriginalExtension();
+            $byelawsRandomName = 'NGO_BYELAWS_' . Str::random(10) . '_' . now()->format('Ymd_His') . '_' . '.' . $rcExtension;
+
+            $byelawsStoredPath = $byelawsFile->storeAs("ngo_files/{$ngoSystemGenRegNo}", $byelawsRandomName, 'public');
+            copy(storage_path("app/public/{$byelawsStoredPath}"), "{$folderPath}/{$byelawsRandomName}");
+            copy(storage_path("app/public/{$byelawsStoredPath}"), "{$externalPath}/{$byelawsRandomName}");
+        }
+
+        $natureOfOrganisation = implode(',', $request->input('nature_of_organisation'));
+
+        $NgoRegistration = NgoRegistration::find($ngo_tbl_records->id);
+        if (!$NgoRegistration) {
+            return redirect()->back()->with('error', 'NGO record not found.');
+        }
+
+        $NgoRegistration->ngo_registration_type = $validatedData['ngo_registration_type'];
+        $NgoRegistration->ngo_category = $validatedData['ngo_category'];
+        $NgoRegistration->ngo_org_name = $validatedData['ngo_org_name'];
+        $NgoRegistration->ngo_org_pan = $validatedData['ngo_org_pan'];
+        $NgoRegistration->ngo_org_pan_file = !empty($panStoredPath) ? $panStoredPath : $ngo_tbl_records->ngo_org_pan_file;
+        $NgoRegistration->ngo_org_email = $validatedData['ngo_org_email'];
+        $NgoRegistration->ngo_org_phone = $validatedData['ngo_org_phone'];
+        $NgoRegistration->ngo_org_website = $validatedData['ngo_org_website'];
+        $NgoRegistration->ngo_registered_with = $validatedData['ngo_registered_with'];
+        $NgoRegistration->ngo_other_reg_act = $validatedData['ngo_registered_with'] == 10 ? $validatedData['ngo_other_reg_act'] : null;
+        $NgoRegistration->ngo_type_of_vo_or_ngo = $validatedData['ngo_type_of_vo_or_ngo'];
+        $NgoRegistration->ngo_reg_no = $validatedData['ngo_reg_no'];
+        $NgoRegistration->ngo_system_gen_reg_no = $ngoSystemGeneratedRegNo;
+        $NgoRegistration->ngo_file_rc = !empty($rcStoredPath) ? $rcStoredPath : $ngo_tbl_records->ngo_file_rc;
+        $NgoRegistration->ngo_date_of_registration = $validatedData['ngo_date_of_registration'];
+        $NgoRegistration->ngo_date_of_registration_validity = $validatedData['ngo_date_of_registration_validity'];
+        $NgoRegistration->nature_of_organisation = $natureOfOrganisation;
+        $natureOfOrganisationArray = $request->input('nature_of_organisation', []);
+        $NgoRegistration->nature_of_organisation_other = in_array('6', $natureOfOrganisationArray) ? $request->input('nature_of_organisation_other') : null;
+        $NgoRegistration->ngo_organisation_type = $validatedData['ngo_organisation_type'];
+        $NgoRegistration->ngo_file_byelaws = !empty($byelawsStoredPath) ? $byelawsStoredPath : $ngo_tbl_records->ngo_file_byelaws;
+        $NgoRegistration->ngo_parent_organisation = $request->input('ngo_parent_organisation');
+        $NgoRegistration->ngo_reg_velidity_available = $validatedData['ngo_reg_velidity_available'];
+        $NgoRegistration->updated_date = now()->setTimezone('Asia/Kolkata')->toDateString();
+        $NgoRegistration->updated_time = now()->setTimezone('Asia/Kolkata')->toTimeString();
+        $NgoRegistration->updated_by = Auth::id() ?? null;
+        $action = $request->input('register');
+        if (in_array($action, ['submit', 'draft'])) {
+            $NgoRegistration->application_stage_id = $action === 'submit' ? 2 : 1;
+        }
+        $resetFields = array_fill_keys([
+            'dsso_remarks_type', 'dsso_created_by', 'dsso_created_date', 'dsso_created_time',
+            'dsso_updated_date', 'dsso_updated_time', 'dsso_remark', 'dsso_inspection_report_file',
+
+            'collector_assigned', 'collector_remarks_type', 'collector_created_by', 'collector_created_date',
+            'collector_created_time', 'collector_updated_date', 'collector_updated_time',
+            'collector_remark', 'collector_inspection_report_file',
+
+            'ho_assigned', 'ho_remarks_type', 'ho_created_by', 'ho_created_date', 'ho_created_time',
+            'ho_updated_date', 'ho_updated_time', 'ho_remark', 'ho_inspection_report_file',
+
+            'bo_assigned', 'bo_remarks_type', 'bo_created_by', 'bo_created_date', 'bo_created_time',
+            'bo_updated_date', 'bo_updated_time', 'bo_remark', 'bo_inspection_report_file',
+
+            'director_assigned', 'director_remarks_type', 'director_created_by', 'director_created_date',
+            'director_created_time', 'director_updated_date', 'director_updated_time',
+            'director_remark', 'director_inspection_report_file',
+
+            'admin_assigned', 'admin_remarks_type', 'admin_created_by', 'admin_created_date',
+            'admin_created_time', 'admin_updated_date', 'admin_updated_time',
+            'admin_remark', 'admin_inspection_report_file',
+
+            'ngo_approved_from_date', 'ngo_approved_validity_date',
+        ], null);
+
+        $NgoRegistration->status = 1;
+        $NgoRegistration->fill($resetFields)->save();
+
+        $applicationstagehistory = new ApplicationStageHistory();
+        $applicationstagehistory->department_scheme_id = 1;
+        $applicationstagehistory->model_name = 'NgoRegistration';
+        $applicationstagehistory->model_table_id = $NgoRegistration->id;
+        $applicationstagehistory->initial_model_table_id = $NgoRegistration->id;
+        $applicationstagehistory->stage_id = 37;
+        $applicationstagehistory->stage_name = 'Application updated by User';
+        $applicationstagehistory->created_date = now()->setTimezone('Asia/Kolkata')->toDateString();
+        $applicationstagehistory->created_time = now()->setTimezone('Asia/Kolkata')->toTimeString();
+        $applicationstagehistory->created_by = Auth::id();
+        $applicationstagehistory->created_by_remarks = 'User has updated the first step of the NGO application.';
+        $ipAddress = request()->ip();
+        $applicationstagehistory->created_by_ip_v_four = filter_var($ipAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) ? $ipAddress : null;
+        $applicationstagehistory->created_by_ip_v_six = filter_var($ipAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) ? $ipAddress : null;
+        $applicationstagehistory->save();
+
+        DB::commit();
+        return redirect()->back()->with('info', 'NGO application updated successfully.');
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return redirect()->back()->with('error', 'Something went wrong. Please try again.')->withInput();
+    }
+}
+
+public function update_ngo_application_part_two_get_office_bearer(Request $request)
+{
+    $bearer = NgoPartTwoOfficeBearer::findOrFail($request->id);
+
+    return response()->json([
+        'id' => $bearer->id,
+        'office_bearer_name' => $bearer->office_bearer_name,
+        'office_bearer_gender' => $bearer->office_bearer_gender,
+        'office_bearer_email' => $bearer->office_bearer_email,
+        'office_bearer_phone' => $bearer->office_bearer_phone,
+        'office_bearer_designation' => $bearer->office_bearer_designation,
+        'office_bearer_key_designation' => $bearer->office_bearer_key_designation,
+        'office_bearer_date_of_association' => $bearer->office_bearer_date_of_association,
+        'office_bearer_pan' => $bearer->office_bearer_pan,
+        'office_bearer_name_as_aadhar' => $bearer->office_bearer_name_as_aadhar,
+        'office_bearer_dob' => $bearer->office_bearer_dob,
+        'office_bearer_aadhar' => $bearer->office_bearer_aadhar,
+        'office_bearer_pan_file' => $bearer->office_bearer_pan_file ? asset('storage/' . $bearer->office_bearer_pan_file) : null,
+        'office_bearer_aadhar_file' => $bearer->office_bearer_aadhar_file ? asset('storage/' . $bearer->office_bearer_aadhar_file) : null,
+    ]);
+}
+
+public function update_ngo_application_part_two_update_office_bearer(Request $request)
+{
+    $validator = Validator::make($request->all(), [
+        'id' => 'required|exists:ngo_part_two_office_bearers,id',
+        'office_bearer_name' => 'required|string|max:255',
+        'office_bearer_gender' => 'required|in:1,2,3',
+        'office_bearer_email' => 'required|email|max:255',
+        'office_bearer_phone' => 'required|digits:10',
+        'office_bearer_designation' => 'required|string|max:255',
+        'office_bearer_key_designation' => 'required|string|max:255',
+        'office_bearer_date_of_association' => 'required|date',
+        'office_bearer_pan' => 'required|alpha_num|size:10',
+        'office_bearer_pan_file' => 'nullable|file|mimes:pdf|max:2048',
+        'office_bearer_name_as_aadhar' => 'required|string|max:255',
+        'office_bearer_dob' => 'required|date',
+        'office_bearer_aadhar' => 'required|numeric|min:12',
+        'office_bearer_aadhar_file' => 'nullable|file|mimes:pdf|max:2048',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json(['errors' => $validator->errors()], 422);
     }
 
-    $ipAddress = request()->ip();
-    $ip_v4 = filter_var($ipAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) ? $ipAddress : null;
-    $ip_v6 = filter_var($ipAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) ? $ipAddress : null;
-    $currentDate = now()->setTimezone('Asia/Kolkata')->toDateString();
-    $currentTime = now()->setTimezone('Asia/Kolkata')->toTimeString();
+    DB::beginTransaction();
+    try {
+        $bearer = NgoPartTwoOfficeBearer::findOrFail($request->id);
 
-    if ($role == 'DSSO') {
-        $ngo_tbl_records->dsso_remarks_type = $validatedData['remarks_type'];
-        $ngo_tbl_records->dsso_inspection_report_file = $inspectionFilePath;
-        $ngo_tbl_records->dsso_remark = $validatedData['remark_data'];
-        $ngo_tbl_records->dsso_created_by = Auth::id();
-        $ngo_tbl_records->dsso_created_date = $currentDate;
-        $ngo_tbl_records->dsso_created_time = $currentTime;
+        $ngo_tbl_records = NgoRegistration::findOrFail($bearer->ngo_tbl_id);
+        $ngoSystemGenRegNo = str_replace('/', '_', $ngo_tbl_records->ngo_system_gen_reg_no);
+        $folderPath = public_path("ngo_files/{$ngoSystemGenRegNo}");
+        /*A folder i.e. storage/ngo_files is created inside the root directory ssepd_ngo_working_portal/storage/ngo_files*/
+        $externalBasePath = dirname(base_path());
+        $externalPath = $externalBasePath . "/storage/ngo_files/{$ngoSystemGenRegNo}";
+        if (!file_exists($folderPath)) { mkdir($folderPath, 0755, true); }
+        if (!file_exists($externalPath)) { mkdir($externalPath, 0755, true); }
 
-        if ($validatedData['remarks_type'] == 1) {
-            $ngo_tbl_records->application_stage_id = 9;
-            $ngo_tbl_records->collector_assigned = User::role('Collector')->where('posted_district', $ngo_tbl_records->district_id)->value('id');
-            $stageId = 9;
-            $stageName = 'Forwarded to Collector';
-        } elseif ($validatedData['remarks_type'] == 6) {
-            $ngo_tbl_records->application_stage_id = 18;
-            $stageId = 18;
-            $stageName = 'Rejected by DSSO';
-        } elseif ($validatedData['remarks_type'] == 7) {
-            $ngo_tbl_records->application_stage_id = 30;
-            $stageId = 30;
-            $stageName = 'Reverted by DSSO';
-        } else {
-            return redirect()->back()->with('warning', "Please select the appropriate option!");
+        if ($request->hasFile('office_bearer_pan_file')) {
+            $panFile = $request->file('office_bearer_pan_file');
+            $panExtension = $panFile->getClientOriginalExtension();
+            $panRandomName = 'OFFICE_BEARER_PAN_' . Str::random(10) . '_' . now()->format('Ymd_His') . '_' . '.' . $panExtension;
+
+            $ngoBearerPanFilePath = $panFile->storeAs("ngo_files/{$ngoSystemGenRegNo}", $panRandomName, 'public');
+            copy(storage_path("app/public/{$ngoBearerPanFilePath}"), "{$folderPath}/{$panRandomName}");
+            copy(storage_path("app/public/{$ngoBearerPanFilePath}"), "{$externalPath}/{$panRandomName}");
         }
 
-        $ngo_tbl_records->save();
+        if ($request->hasFile('office_bearer_aadhar_file')) {
+            $rcFile = $request->file('office_bearer_aadhar_file');
+            $rcExtension = $rcFile->getClientOriginalExtension();
+            $rcRandomName = 'OFFICE_BEARER_AADHAR_' . Str::random(10) . '_' . now()->format('Ymd_His') . '_' . '.' . $rcExtension;
 
-        ApplicationStageHistory::create([
-            'department_scheme_id' => 1,
-            'model_name' => 'NgoRegistration',
-            'model_table_id' => $ngo_tbl_records->id,
-            'stage_id' => $stageId,
-            'stage_name' => $stageName,
-            'created_date' => $currentDate,
-            'created_time' => $currentTime,
-            'created_by' => Auth::id(),
-            'created_by_remarks' => $validatedData['remark_data'],
-            'created_by_ip_v_four' => $ip_v4,
-            'created_by_ip_v_six' => $ip_v6,
-        ]);
-
-        return redirect()->route('admin.ngo.index')->with('success', "Application Updated.");
-
-    } elseif ($role == 'Collector') {
-        $ngo_tbl_records->collector_remarks_type = $validatedData['remarks_type'];
-        $ngo_tbl_records->collector_inspection_report_file = $inspectionFilePath;
-        $ngo_tbl_records->collector_remark = $validatedData['remark_data'];
-        $ngo_tbl_records->collector_created_by = Auth::id();
-        $ngo_tbl_records->collector_created_date = $currentDate;
-        $ngo_tbl_records->collector_created_time = $currentTime;
-
-        if ($validatedData['remarks_type'] == 2) {
-            $ngo_tbl_records->application_stage_id = 10;
-            $ngo_tbl_records->ho_assigned = User::role('HO')->where('department_section_id', 6)->value('id');
-            $stageId = 10;
-            $stageName = 'Forwarded to HO';
-        } elseif ($validatedData['remarks_type'] == 6) {
-            $ngo_tbl_records->application_stage_id = 20;
-            $stageId = 20;
-            $stageName = 'Rejected by Collector';
-        } elseif ($validatedData['remarks_type'] == 7) {
-            $ngo_tbl_records->application_stage_id = 32;
-            $stageId = 32;
-            $stageName = 'Reverted by Collector';
-        } else {
-            return redirect()->back()->with('warning', "Please select the appropriate option!");
+            $ngoBearerFileAadharPath = $rcFile->storeAs("ngo_files/{$ngoSystemGenRegNo}", $rcRandomName, 'public');
+            copy(storage_path("app/public/{$ngoBearerFileAadharPath}"), "{$folderPath}/{$rcRandomName}");
+            copy(storage_path("app/public/{$ngoBearerFileAadharPath}"), "{$externalPath}/{$rcRandomName}");
         }
 
-        $ngo_tbl_records->save();
+        $bearer->office_bearer_name = $request->office_bearer_name;
+        $bearer->office_bearer_gender = $request->office_bearer_gender;
+        $bearer->office_bearer_email = $request->office_bearer_email;
+        $bearer->office_bearer_phone = $request->office_bearer_phone;
+        $bearer->office_bearer_designation = $request->office_bearer_designation;
+        $bearer->office_bearer_key_designation = $request->office_bearer_key_designation;
+        $bearer->office_bearer_date_of_association = $request->office_bearer_date_of_association;
+        $bearer->office_bearer_pan = $request->office_bearer_pan;
+        $bearer->office_bearer_name_as_aadhar = $request->office_bearer_name_as_aadhar;
+        $bearer->office_bearer_dob = $request->office_bearer_dob;
+        $bearer->office_bearer_aadhar = $request->office_bearer_aadhar;
+        $bearer->office_bearer_pan_file = !empty($ngoBearerPanFilePath) ? $ngoBearerPanFilePath : $bearer->office_bearer_pan_file;
+        $bearer->office_bearer_aadhar_file = !empty($ngoBearerFileAadharPath) ? $ngoBearerFileAadharPath : $bearer->office_bearer_aadhar_file;
+        $bearer->save();
 
-        ApplicationStageHistory::create([
-            'department_scheme_id' => 1,
-            'model_name' => 'NgoRegistration',
-            'model_table_id' => $ngo_tbl_records->id,
-            'stage_id' => $stageId,
-            'stage_name' => $stageName,
-            'created_date' => $currentDate,
-            'created_time' => $currentTime,
-            'created_by' => Auth::id(),
-            'created_by_remarks' => $validatedData['remark_data'],
-            'created_by_ip_v_four' => $ip_v4,
-            'created_by_ip_v_six' => $ip_v6,
-        ]);
+        $applicationstagehistory = new ApplicationStageHistory();
+        $applicationstagehistory->department_scheme_id = 1;
+        $applicationstagehistory->model_name = 'NgoPartTwoOfficeBearer';
+        $applicationstagehistory->model_table_id = $bearer->id;
+        $applicationstagehistory->initial_model_table_id = $ngo_tbl_records->id;
+        $applicationstagehistory->stage_id = 37;
+        $applicationstagehistory->stage_name = 'Application updated by User';
+        $applicationstagehistory->created_date = now()->setTimezone('Asia/Kolkata')->toDateString();
+        $applicationstagehistory->created_time = now()->setTimezone('Asia/Kolkata')->toTimeString();
+        $applicationstagehistory->created_by = Auth::id();
+        $applicationstagehistory->created_by_remarks = 'User has updated the record of an Office Bearer.';
+        $ipAddress = request()->ip();
+        $applicationstagehistory->created_by_ip_v_four = filter_var($ipAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) ? $ipAddress : null;
+        $applicationstagehistory->created_by_ip_v_six = filter_var($ipAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) ? $ipAddress : null;
+        $applicationstagehistory->save();
 
-        return redirect()->route('admin.ngo.index')->with('success', "Application Updated.");
-    } elseif ($role == 'HO') {
-        $ngo_tbl_records->ho_remarks_type = $validatedData['remarks_type'];
-        $ngo_tbl_records->ho_inspection_report_file = $inspectionFilePath;
-        $ngo_tbl_records->ho_remark = $validatedData['remark_data'];
-        $ngo_tbl_records->ho_created_by = Auth::id();
-        $ngo_tbl_records->ho_created_date = $currentDate;
-        $ngo_tbl_records->ho_created_time = $currentTime;
+        DB::commit();
+        return response()->json(['success' => true]);
+    } catch (\Exception $e) {
+        DB::rollBack();
+        \Log::error("NGO Part Two Registration failed: " . $e->getMessage());
+        return redirect()->back()->withErrors(['error' => 'Something went wrong. Please try again.'])->withInput();
+    }
+}
 
-        if ($validatedData['remarks_type'] == 3) {
-            $ngo_tbl_records->application_stage_id = 11;
-            $ngo_tbl_records->bo_assigned = User::role('BO')->where('department_section_id', 6)->value('id');
-            $stageId = 11;
-            $stageName = 'Forwarded to BO';
-        } elseif ($validatedData['remarks_type'] == 6) {
-            $ngo_tbl_records->application_stage_id = 22;
-            $stageId = 22;
-            $stageName = 'Rejected by HO';
-        } elseif ($validatedData['remarks_type'] == 7) {
-            $ngo_tbl_records->application_stage_id = 33;
-            $stageId = 33;
-            $stageName = 'Reverted by HO';
-        } else {
-            return redirect()->back()->with('warning', "Please select the appropriate option!");
+public function update_ngo_application_part_two_add_another_office_bearer(Request $request, string $id)
+{
+    $NgoRegistration = NgoRegistration::with(['state', 'district', 'block', 'grampanchayat', 'village', 'municipality'])->findOrFail($id);
+    return view('dashboard.ngo.add_another_office_bearer', compact('id', 'NgoRegistration'));
+}
+
+public function update_ngo_application_part_two_store_another_office_bearer(Request $request, string $id)
+{
+    $validationRules = [
+        'office_bearer_name' => 'required|string|max:255',
+        'office_bearer_gender' => 'required|in:1,2,3',
+        'office_bearer_email' => 'required|email|max:255',
+        'office_bearer_phone' => 'required|digits:10',
+        'office_bearer_designation' => 'required|string|max:255',
+        'office_bearer_key_designation' => 'required|string|max:255',
+        'office_bearer_date_of_association' => 'required|date',
+        'office_bearer_pan' => 'required|alpha_num|size:10',
+        'office_bearer_pan_file' => 'required|file|mimes:pdf|max:2048',
+        'office_bearer_name_as_aadhar' => 'required|string|max:255',
+        'office_bearer_dob' => 'required|date',
+        'office_bearer_aadhar' => 'required|numeric|min:12',
+        'office_bearer_aadhar_file' => 'required|file|mimes:pdf|max:2048',
+        'want_to_add_another_bearer' => 'required|in:1,2',
+    ];
+    $validatedData = $request->validate($validationRules);
+    DB::beginTransaction();
+    try {
+
+        $addressMessage = '';
+        $ngo_tbl_records = NgoRegistration::findOrFail($request->id);
+        $ngoSystemGenRegNo = str_replace('/', '_', $ngo_tbl_records->ngo_system_gen_reg_no);
+        $folderPath = public_path("ngo_files/{$ngoSystemGenRegNo}");
+        /*A folder i.e. storage/ngo_files is created inside the root directory ssepd_ngo_working_portal/storage/ngo_files*/
+        $externalBasePath = dirname(base_path());
+        $externalPath = $externalBasePath . "/storage/ngo_files/{$ngoSystemGenRegNo}";
+        if (!file_exists($folderPath)) {
+            mkdir($folderPath, 0755, true);
         }
 
+        if (!file_exists($externalPath)) {
+            mkdir($externalPath, 0755, true);
+        }
+
+        if ($request->hasFile('office_bearer_pan_file')) {
+            $panFile = $request->file('office_bearer_pan_file');
+            $panExtension = $panFile->getClientOriginalExtension();
+            $panRandomName = 'OFFICE_BEARER_PAN_' . Str::random(10) . '_' . now()->format('Ymd_His') . '_' . '.' . $panExtension;
+
+            $ngoBearerPanFilePath = $panFile->storeAs("ngo_files/{$ngoSystemGenRegNo}", $panRandomName, 'public');
+            copy(storage_path("app/public/{$ngoBearerPanFilePath}"), "{$folderPath}/{$panRandomName}");
+            copy(storage_path("app/public/{$ngoBearerPanFilePath}"), "{$externalPath}/{$panRandomName}");
+        }
+
+        if ($request->hasFile('office_bearer_aadhar_file')) {
+            $rcFile = $request->file('office_bearer_aadhar_file');
+            $rcExtension = $rcFile->getClientOriginalExtension();
+            $rcRandomName = 'OFFICE_BEARER_AADHAR_' . Str::random(10) . '_' . now()->format('Ymd_His') . '_' . '.' . $rcExtension;
+
+            $ngoBearerFileAadharPath = $rcFile->storeAs("ngo_files/{$ngoSystemGenRegNo}", $rcRandomName, 'public');
+            copy(storage_path("app/public/{$ngoBearerFileAadharPath}"), "{$folderPath}/{$rcRandomName}");
+            copy(storage_path("app/public/{$ngoBearerFileAadharPath}"), "{$externalPath}/{$rcRandomName}");
+        }
+
+        $NgoPartTwoOfficeBearer = new NgoPartTwoOfficeBearer();
+        $NgoPartTwoOfficeBearer->ngo_org_id = $ngo_tbl_records->ngo_org_id;
+        $NgoPartTwoOfficeBearer->ngo_tbl_id = $ngo_tbl_records->id;
+        $NgoPartTwoOfficeBearer->ngo_system_gen_reg_no = $ngo_tbl_records->ngo_system_gen_reg_no;
+        $NgoPartTwoOfficeBearer->office_bearer_name = $validatedData['office_bearer_name'];
+        $NgoPartTwoOfficeBearer->office_bearer_gender = $validatedData['office_bearer_gender'];
+        $NgoPartTwoOfficeBearer->office_bearer_email = $validatedData['office_bearer_email'];
+        $NgoPartTwoOfficeBearer->office_bearer_phone = $validatedData['office_bearer_phone'];
+        $NgoPartTwoOfficeBearer->office_bearer_designation = $validatedData['office_bearer_designation'];
+        $NgoPartTwoOfficeBearer->office_bearer_key_designation = $validatedData['office_bearer_key_designation'];
+        $NgoPartTwoOfficeBearer->office_bearer_date_of_association = $validatedData['office_bearer_date_of_association'];
+        $NgoPartTwoOfficeBearer->office_bearer_pan = $validatedData['office_bearer_pan'];
+        $NgoPartTwoOfficeBearer->office_bearer_pan_file = $ngoBearerPanFilePath;
+        $NgoPartTwoOfficeBearer->office_bearer_name_as_aadhar = $validatedData['office_bearer_name_as_aadhar'];
+        $NgoPartTwoOfficeBearer->office_bearer_dob = $validatedData['office_bearer_dob'];
+        $NgoPartTwoOfficeBearer->office_bearer_aadhar = $validatedData['office_bearer_aadhar'];
+        $NgoPartTwoOfficeBearer->office_bearer_aadhar_file = $ngoBearerFileAadharPath;
+        $NgoPartTwoOfficeBearer->want_to_add_another_bearer = $validatedData['want_to_add_another_bearer'];
+        $NgoPartTwoOfficeBearer->created_date = now()->setTimezone('Asia/Kolkata')->toDateString();
+        $NgoPartTwoOfficeBearer->created_time = now()->setTimezone('Asia/Kolkata')->toTimeString();
+        $NgoPartTwoOfficeBearer->created_by = Auth::id();
+        $NgoPartTwoOfficeBearer->status = 1;
+        $NgoPartTwoOfficeBearer->save();
+
+        $action = $request->input('register');
+        $ngo_tbl_records->application_stage_id = empty($action) ? 2 : 1;
         $ngo_tbl_records->save();
 
-        ApplicationStageHistory::create([
-            'department_scheme_id' => 1,
-            'model_name' => 'NgoRegistration',
-            'model_table_id' => $ngo_tbl_records->id,
-            'stage_id' => $stageId,
-            'stage_name' => $stageName,
-            'created_date' => $currentDate,
-            'created_time' => $currentTime,
-            'created_by' => Auth::id(),
-            'created_by_remarks' => $validatedData['remark_data'],
-            'created_by_ip_v_four' => $ip_v4,
-            'created_by_ip_v_six' => $ip_v6,
-        ]);
+        $applicationstagehistory = new ApplicationStageHistory();
+        $applicationstagehistory->department_scheme_id = 1;
+        $applicationstagehistory->model_name = 'NgoPartTwoOfficeBearer';
+        $applicationstagehistory->model_table_id = $NgoPartTwoOfficeBearer->id;
+        $applicationstagehistory->initial_model_table_id = $ngo_tbl_records->id;
+        $applicationstagehistory->stage_id = 37;
+        $applicationstagehistory->stage_name = 'Application updated by User';
+        $applicationstagehistory->created_date = now()->setTimezone('Asia/Kolkata')->toDateString();
+        $applicationstagehistory->created_time = now()->setTimezone('Asia/Kolkata')->toTimeString();
+        $applicationstagehistory->created_by = Auth::id();
+        $applicationstagehistory->created_by_remarks = 'User has created a new record of an Office Bearer.';
+        $ipAddress = request()->ip();
+        $applicationstagehistory->created_by_ip_v_four = filter_var($ipAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) ? $ipAddress : null;
+        $applicationstagehistory->created_by_ip_v_six = filter_var($ipAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) ? $ipAddress : null;
+        $applicationstagehistory->save();
 
-        return redirect()->route('admin.ngo.index')->with('success', "Application Updated.");
-    } else {
-        return redirect()->back()->with('warning', "You have no access!");
+        DB::commit();
+
+        if($NgoPartTwoOfficeBearer->want_to_add_another_bearer == 1) {
+            return redirect()->back()->with('info', 'One Office Bearer Inserted Successfully.');
+        } else {
+            return redirect()->route('admin.ngo.edit_ngo_application', compact('id'));
+        }
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+        \Log::error("NGO Part Two Registration failed: " . $e->getMessage());
+        return redirect()->back()->withErrors(['error' => 'Something went wrong. Please try again.'])->withInput();
     }
 }
 }

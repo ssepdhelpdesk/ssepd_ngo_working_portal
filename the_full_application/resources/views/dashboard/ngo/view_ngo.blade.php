@@ -669,155 +669,149 @@ NGO || View Details
                                     </tr>
                                  </thead>
                                  <tbody>
-                                    @php
-                                    $stages = ['dsso', 'collector', 'ho', 'bo'];
-                                    @endphp
-                                    @foreach ($stages as $stage)
-                                    @php
-                                    $assigned = $NgoRegistration->{$stage . '_assigned'};
-                                    $createdById = $NgoRegistration->{$stage . '_created_by'};
-                                    $createdTime = $NgoRegistration->{$stage . '_created_time'};
-                                    $remark = $NgoRegistration->{$stage . '_remark'};
-                                    $file = $NgoRegistration->{$stage . '_inspection_report_file'};
-                                    $date = $NgoRegistration->{$stage . '_created_date'};
-                                    $createdByUser = \App\Models\User::find($createdById);
-                                    @endphp
-                                    @if ($assigned && $createdById && $createdTime && $remark && $file)
+                                    @forelse($applicationStageHistory as $appHistory)
                                     <tr>
-                                       <td>{{ $date ?? 'N/A' }}</td>
-                                       <td>{{ $createdByUser->name ?? 'N/A' }}</td>
-                                       <td>{{ $remark ?? 'N/A' }}</td>
                                        <td>
-                                          @if(!empty($file))
-                                          <label class="badge bg-info">
-                                             <a href="{{ url('storage/' . $file) }}" target="_blank" class="text-white">View Inspection Report</a>
-                                          </label>
+                                          @if($appHistory->created_date && $appHistory->created_time)
+                                          {{ \Carbon\Carbon::parse($appHistory->created_date . ' ' . $appHistory->created_time)->format('d M Y, h:i A') }}
                                           @else
                                           N/A
                                           @endif
                                        </td>
-                                    </tr>
-                                    @endif
-                                    @endforeach
-                                 </tbody>
-                              </table>
-                              @endif
-                              @can('ngo-approve-form')
-                              <div class="card-body d-flex justify-content-center gap-2">
-                                 <div class="col-md-4">
-                                    <div class="card">
-                                       <div class="card-body">
-                                          <!-- sample modal content -->
-                                          <div class="modal fade" id="remarksModal" tabindex="-1" aria-labelledby="remarksModalLabel" aria-hidden="true">
-                                             <div class="modal-dialog modal-dialog-centered">
-                                                <div class="modal-content">
-                                                   <div class="modal-header">
-                                                      <h5 class="modal-title" id="remarksModalLabel">Provide Your Remarks</h5>
-                                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                   </div>
-                                                   @if($NgoRegistration->no_of_form_completed == 6 && $NgoRegistration->dsso_assigned != null)
-                                                   <form method="POST" action="{{ route('admin.ngo.dsso_remarks', $ngo_id) }}" onsubmit="return Validate()" enctype="multipart/form-data">
-                                                      @csrf
-                                                      @method('post')
-                                                      <div class="modal-body">
-                                                         <div class="mb-3">
-                                                            <label for="remarks_type" class="form-label">Choose Option</label>
-                                                            <select class="select form-control form-select" name="remarks_type" id="remarks_type">
-                                                               <option value="">--Select--</option>
-                                                               @php $selected = old('remarks_type'); @endphp
-                                                               @if(auth()->user()->hasRole('DSSO'))
-                                                               <option value="1" {{ $selected == '1' ? 'selected' : '' }}>Forward to Collector</option>
-                                                               @endif
-                                                               @if(auth()->user()->hasRole('Collector'))
-                                                               <option value="2" {{ $selected == '2' ? 'selected' : '' }}>Forward to HO</option>
-                                                               @endif
-                                                               @if(auth()->user()->hasRole('HO'))
-                                                               <option value="3" {{ $selected == '3' ? 'selected' : '' }}>Forward to BO</option>
-                                                               @endif
-                                                               @if(auth()->user()->hasRole('BO'))
-                                                               <option value="4" {{ $selected == '4' ? 'selected' : '' }}>Forward to Director</option>
-                                                               @endif
-                                                               @if(auth()->user()->hasRole('Director'))
-                                                               <option value="5" {{ $selected == '5' ? 'selected' : '' }}>Approve</option>
-                                                               @endif
-                                                               <option value="6" {{ $selected == '6' ? 'selected' : '' }}>Reject</option>
-                                                               <option value="7" {{ $selected == '7' ? 'selected' : '' }}>Revert Back</option>
-                                                            </select>
-                                                            <div class="remarks_type_error text-danger mt-1"></div>
-                                                            @error('remarks_type')
-                                                            <label class="error">{{ $message }}</label>
-                                                            @enderror
-                                                         </div>
-                                                         <div class="mb-3">
-                                                            <label for="inspection_report_file" class="form-label">Upload Inspection Report (PDF, max 2MB)</label>
-                                                            <input type="file" class="form-control" id="inspection_report_file" name="inspection_report_file" accept=".pdf">
-                                                            <div class="inspection_report_file_error text-danger mt-1"></div>
-                                                            @error('inspection_report_file')
-                                                            <label class="error">{{ $message }}</label>
-                                                            @enderror
-                                                         </div>
-                                                         <div class="mb-3">
-                                                            <label for="remark_data" class="form-label">Remark</label>
-                                                            <textarea class="form-control" id="remark_data" name="remark_data" rows="4">{{ old('remark_data') }}</textarea>
-                                                            <div class="remark_error_data text-danger mt-1"></div>
-                                                            @error('remark_data')
-                                                            <label class="error">{{ $message }}</label>
-                                                            @enderror
-                                                         </div>
-                                                      </div>
-                                                      <div class="modal-footer">
-                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                         <button type="submit" class="btn btn-primary">Submit</button>
-                                                      </div>
-                                                   </form>
-                                                   @endif
+                                       <td>{{ $appHistory->creator->name ?? 'Unknown User' }}</td>
+                                       <td>{{ $appHistory->created_by_remarks ?? 'N/A' }}</td>
+                                       <td>
+                                         @if(!empty($appHistory->created_by_inspection_report_file))
+                                         <label class="badge bg-info">
+                                          <a href="{{ url('storage/' . $appHistory->created_by_inspection_report_file) }}" target="_blank" class="text-white">View Inspection Report</a>
+                                       </label>
+                                       @else
+                                       N/A
+                                       @endif
+                                    </td>
+                                 </tr>
+                                 @empty
+                                 <tr>
+                                    <td colspan="5" class="text-center">No history available.</td>
+                                 </tr>
+                                 @endforelse
+                              </tbody>
+                           </table>
+                           @endif
+                           @can('ngo-approve-form')
+                           <div class="card-body d-flex justify-content-center gap-2">
+                              <div class="col-md-4">
+                                 <div class="card">
+                                    <div class="card-body">
+                                       <!-- sample modal content -->
+                                       <div class="modal fade" id="remarksModal" tabindex="-1" aria-labelledby="remarksModalLabel" aria-hidden="true">
+                                          <div class="modal-dialog modal-dialog-centered">
+                                             <div class="modal-content">
+                                                <div class="modal-header">
+                                                   <h5 class="modal-title" id="remarksModalLabel">Provide Your Remarks</h5>
+                                                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
+                                                @if($NgoRegistration->no_of_form_completed == 6 && $NgoRegistration->dsso_assigned != null)
+                                                <form method="POST" action="{{ route('admin.ngo.executive_remarks', $ngo_id) }}" onsubmit="return Validate()" enctype="multipart/form-data">
+                                                   @csrf
+                                                   @method('post')
+                                                   <div class="modal-body">
+                                                      <div class="mb-3">
+                                                         <label for="remarks_type" class="form-label">Choose Option</label>
+                                                         <select class="select form-control form-select" name="remarks_type" id="remarks_type">
+                                                            <option value="">--Select--</option>
+                                                            @php $selected = old('remarks_type'); @endphp
+                                                            @if(auth()->user()->hasRole('DSSO'))
+                                                            <option value="1" {{ $selected == '1' ? 'selected' : '' }}>Forward to Collector</option>
+                                                            @endif
+                                                            @if(auth()->user()->hasRole('Collector'))
+                                                            <option value="2" {{ $selected == '2' ? 'selected' : '' }}>Forward to HO</option>
+                                                            @endif
+                                                            @if(auth()->user()->hasRole('HO'))
+                                                            <option value="3" {{ $selected == '3' ? 'selected' : '' }}>Forward to BO</option>
+                                                            @endif
+                                                            @if(auth()->user()->hasRole('BO'))
+                                                            <option value="4" {{ $selected == '4' ? 'selected' : '' }}>Forward to Director</option>
+                                                            @endif
+                                                            @if(auth()->user()->hasRole('Director'))
+                                                            <option value="5" {{ $selected == '5' ? 'selected' : '' }}>Approve</option>
+                                                            @endif
+                                                            <option value="6" {{ $selected == '6' ? 'selected' : '' }}>Reject</option>
+                                                            <option value="7" {{ $selected == '7' ? 'selected' : '' }}>Revert Back</option>
+                                                         </select>
+                                                         <div class="remarks_type_error text-danger mt-1"></div>
+                                                         @error('remarks_type')
+                                                         <label class="error">{{ $message }}</label>
+                                                         @enderror
+                                                      </div>
+                                                      <div class="mb-3">
+                                                         <label for="inspection_report_file" class="form-label">Upload Inspection Report (PDF, max 2MB)</label>
+                                                         <input type="file" class="form-control" id="inspection_report_file" name="inspection_report_file" accept=".pdf">
+                                                         <div class="inspection_report_file_error text-danger mt-1"></div>
+                                                         @error('inspection_report_file')
+                                                         <label class="error">{{ $message }}</label>
+                                                         @enderror
+                                                      </div>
+                                                      <div class="mb-3">
+                                                         <label for="remark_data" class="form-label">Remark</label>
+                                                         <textarea class="form-control" id="remark_data" name="remark_data" rows="4">{{ old('remark_data') }}</textarea>
+                                                         <div class="remark_error_data text-danger mt-1"></div>
+                                                         @error('remark_data')
+                                                         <label class="error">{{ $message }}</label>
+                                                         @enderror
+                                                      </div>
+                                                   </div>
+                                                   <div class="modal-footer">
+                                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                      <button type="submit" class="btn btn-primary">Submit</button>
+                                                   </div>
+                                                </form>
+                                                @endif
                                              </div>
                                           </div>
-                                          <!-- /.modal -->
-                                          {{-- DSSO Section --}}
-                                          @if(
-                                          auth()->user()->hasRole('DSSO') && (
-                                          ($NgoRegistration->no_of_form_completed == 6 && $NgoRegistration->dsso_assigned !== null && $NgoRegistration->application_stage_id == 2)
-                                          || $NgoRegistration->application_stage_id == 32
-                                          )
-                                          )
-                                          <div class="card-body d-flex justify-content-center gap-2">
-                                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#remarksModal">Action</button>
-                                          </div>
-                                          @endif
-
-                                          {{-- Collector Section --}}
-                                          @if(
-                                          auth()->user()->hasRole('Collector') && (
-                                          ($NgoRegistration->no_of_form_completed == 6 && $NgoRegistration->dsso_assigned !== null && $NgoRegistration->collector_assigned !== null && $NgoRegistration->application_stage_id == 9)
-                                          || $NgoRegistration->application_stage_id == 33
-                                          )
-                                          )
-                                          <div class="card-body d-flex justify-content-center gap-2">
-                                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#remarksModal">Action</button>
-                                          </div>
-                                          @endif
-
-                                          {{-- HO Section --}}
-                                          @if(
-                                          auth()->user()->hasRole('HO') && (
-                                          ($NgoRegistration->no_of_form_completed == 6 && $NgoRegistration->dsso_assigned !== null && $NgoRegistration->collector_assigned !== null &&
-                                          $NgoRegistration->ho_assigned !== null && $NgoRegistration->application_stage_id == 10)
-                                          || $NgoRegistration->application_stage_id == 34
-                                          )
-                                          )
-                                          <div class="card-body d-flex justify-content-center gap-2">
-                                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#remarksModal">Action</button>
-                                          </div>
-                                          @endif
-
                                        </div>
+                                       <!-- /.modal -->
+                                       {{-- DSSO Section --}}
+                                       @if(
+                                       auth()->user()->hasRole('DSSO') && (
+                                       ($NgoRegistration->no_of_form_completed == 6 && $NgoRegistration->dsso_assigned !== null && $NgoRegistration->application_stage_id == 2)
+                                       || $NgoRegistration->application_stage_id == 32
+                                       )
+                                       )
+                                       <div class="card-body d-flex justify-content-center gap-2">
+                                          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#remarksModal">Action</button>
+                                       </div>
+                                       @endif
+
+                                       {{-- Collector Section --}}
+                                       @if(
+                                       auth()->user()->hasRole('Collector') && (
+                                       ($NgoRegistration->no_of_form_completed == 6 && $NgoRegistration->dsso_assigned !== null && $NgoRegistration->collector_assigned !== null && $NgoRegistration->application_stage_id == 9)
+                                       || $NgoRegistration->application_stage_id == 33
+                                       )
+                                       )
+                                       <div class="card-body d-flex justify-content-center gap-2">
+                                          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#remarksModal">Action</button>
+                                       </div>
+                                       @endif
+
+                                       {{-- HO Section --}}
+                                       @if(
+                                       auth()->user()->hasRole('HO') && (
+                                       ($NgoRegistration->no_of_form_completed == 6 && $NgoRegistration->dsso_assigned !== null && $NgoRegistration->collector_assigned !== null &&
+                                       $NgoRegistration->ho_assigned !== null && $NgoRegistration->application_stage_id == 10)
+                                       || $NgoRegistration->application_stage_id == 34
+                                       )
+                                       )
+                                       <div class="card-body d-flex justify-content-center gap-2">
+                                          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#remarksModal">Action</button>
+                                       </div>
+                                       @endif
                                     </div>
                                  </div>
                               </div>
-                              @endcan
                            </div>
+                           @endcan
                         </div>
                      </div>
                   </div>
@@ -826,10 +820,11 @@ NGO || View Details
          </div>
       </div>
    </div>
-   <!-- row -->
-   <!-- ============================================================== -->
-   <!-- End Page Content -->
-   <!-- ============================================================== -->
+</div>
+<!-- row -->
+<!-- ============================================================== -->
+<!-- End Page Content -->
+<!-- ============================================================== -->
 </div>
 @endsection 
 @section('script')
@@ -1049,10 +1044,11 @@ NGO || View Details
          document.querySelector(".remark_error_data").innerHTML = "Remarks field is required.";
          isValid = false;
       }
-      
-      if (!file.files[0]) {
-         document.querySelector(".inspection_report_file_error").innerHTML = "Please upload the inspection report file.";
-         isValid = false;
+      if (remarksType !== "6" && remarksType !== "7") {
+         if (!file.files[0]) {
+            document.querySelector(".inspection_report_file_error").innerHTML = "Please upload the inspection report file.";
+            isValid = false;
+         }
       }
       
       return isValid;

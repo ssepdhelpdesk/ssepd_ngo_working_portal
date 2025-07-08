@@ -98,9 +98,17 @@ NGO || List
                                     @endif
                                     <a class="dropdown-item" href="{{route('admin.ngo.view_ngo_application', $ngo->id)}}" target="_blank">View</a>
                                     @endcan
+                                    @if(auth()->user()->hasAnyRole(['DSSO', 'Collector', 'HO', 'BO', 'Director']))
                                     @can('ngo-edit')
-                                    <a class="dropdown-item" href="{{route('admin.roles.edit', $ngo->id)}}">Edit</a>
+                                    <a class="dropdown-item" href="{{ route('admin.ngo.edit_ngo_application', $ngo->id) }}">Edit</a>
                                     @endcan
+                                    @endif
+
+                                    @if(auth()->user()->hasRole('Ngo') && in_array($ngo->application_stage_id, [1, 18, 20, 21, 22, 23, 30]))
+                                    @can('ngo-edit')
+                                    <a class="dropdown-item" href="{{ route('admin.ngo.edit_ngo_application', $ngo->id) }}">ReApply</a>
+                                    @endcan
+                                    @endif
                                     @can('ngo-delete')
                                     <a class="dropdown-item" href="{{route('admin.roles.destroy', $ngo->id)}}" id="delete">Delete</a>
                                     @endcan
@@ -126,17 +134,17 @@ NGO || List
 @section('script')
 <script>
    $(function () {
-    $('#example23').DataTable({
-     processing: true,
-     responsive: true,
-     ordering: true,
-     lengthMenu: [[10, 500, 1000, -1], [10, 500, 1000, "All"]],
-     dom: 'Blfrtip',
-     buttons: [
-      'copy', 'csv', 'excel', 'pdf', 'print'
-   ]
-});
-    $('.buttons-copy, .buttons-csv, .buttons-print, .buttons-pdf, .buttons-excel').addClass('btn btn-primary me-1');
- });   
+     $('#example23').DataTable({
+       processing: true,
+       responsive: true,
+       ordering: true,
+       lengthMenu: [[10, 500, 1000, -1], [10, 500, 1000, "All"]],
+       dom: 'Blfrtip',
+       buttons: [
+         'copy', 'csv', 'excel', 'pdf', 'print'
+      ]
+   });
+     $('.buttons-copy, .buttons-csv, .buttons-print, .buttons-pdf, .buttons-excel').addClass('btn btn-primary me-1');
+  });   
 </script>
 @endsection

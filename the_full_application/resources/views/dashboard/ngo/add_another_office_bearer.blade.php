@@ -49,21 +49,11 @@ NGO || Create
                @endif
                <div id="alert-container"></div>
                <div class="col-sm-12 col-xs-12">
-                  <form class="from-prevent-multiple-submits" method="POST" action="{{ route('admin.ngo.part_two_store', $id)}}" onsubmit="return Validate()" name="vform" enctype="multipart/form-data">
+                  <form class="from-prevent-multiple-submits" method="POST" action="{{ route('admin.ngo.update_ngo_application_part_two_store_another_office_bearer', $id)}}" onsubmit="return Validate()" name="vform" enctype="multipart/form-data">
                      @csrf
                      @method('post')
                      <div class="form-body">
                         <h5 class="card-title">Office Bearer Details</h5>
-                        <ul class="list-group">
-                           <li class="list-group-item list-group-item-warning">
-                              <b>Please note that it is mandatory to provide information of the following office bearer posts. If it is found that information of other office bearers is given in place of these mandatory posts, the Unique ID could be archived.</b>
-                              <ul>
-                                 <li>Chairman / President or Equivalent post</li>
-                                 <li>Secretary General (Incharge of Operations) or Equivalent post</li>
-                                 <li>Treasurer / Financial Trustee or Equivalent post</li>
-                              </ul>
-                           </li>
-                        </ul>
                         <hr>
                         <div class="row">
                            <div class="col-md-3">
@@ -246,9 +236,13 @@ NGO || Create
                         </div>
                         <!--/row-->
                      </div>
+                     @if((int) $NgoRegistration->application_stage_id === 1)
                      <div class="form-actions">
-                        <button type="submit" id="submitButton" name="register" class="btn btn-primary text-white from-prevent-multiple-submits"><i class="spinner fa fa-spinner fa-spin"></i> Submit</button>
+                        <button type="submit" id="submitButton" value="submit" name="register" class="btn btn-primary text-white"> Submit </button>
+                        <button type="submit" value="draft" name="register" class="btn btn-info text-white"> Draft my Application </button>
+                        <button type="button" class="btn btn-warning">Cancel</button>
                      </div>
+                     @endif
                   </form>
                </div>
             </div>
@@ -266,17 +260,17 @@ NGO || Create
    document.addEventListener("DOMContentLoaded", function () {
       const form = document.forms['vform'];
       const submitButton = document.getElementById('submitButton');
-   
+      
       submitButton.addEventListener('click', function (e) {
          e.preventDefault();
          if (validateFormFields()) {
             form.submit();
          }
       });
-   
+      
       function validateFormFields() {
          clearErrors();
-   
+         
          const fields = [
             {name: 'office_bearer_name', errorClass: 'office_bearer_name_error', message: 'Please Provide Office Bearer Name.'},
             {name: 'office_bearer_gender', errorClass: 'office_bearer_gender_error', message: 'Please Select Gender.'},
@@ -292,11 +286,11 @@ NGO || Create
             {name: 'office_bearer_aadhar', errorClass: 'office_bearer_aadhar_error', message: 'Please Provide Aadhar No.'},
             {name: 'office_bearer_aadhar_file', errorClass: 'office_bearer_aadhar_file_error', message: 'Please Upload Aadhar.'}
          ];
-   
+         
          for (let field of fields) {
             const inputElement = document.querySelector(`[name='${field.name}']`);
             const errorElement = document.querySelector(`.${field.errorClass}`);
-   
+            
             if (!inputElement || inputElement.value.trim() === '') {
                errorElement.innerHTML = `<span style="color: red;">${field.message}</span>`;
                inputElement.style.borderColor = "red";
@@ -305,24 +299,24 @@ NGO || Create
                inputElement.style.borderColor = "";
             }
          }
-   
+         
          return true;
       }
-   
+      
       function clearErrors() {
          const errorContainers = document.querySelectorAll('.office_bearer_name_error, .office_bearer_gender_error, .office_bearer_email_error, .office_bearer_phone_error, .office_bearer_designation_error, .office_bearer_key_designation_error, .office_bearer_date_of_association_error, .office_bearer_pan_error, .office_bearer_pan_file_error, .office_bearer_name_as_aadhar_error, .office_bearer_dob_error, .office_bearer_aadhar_error, .office_bearer_aadhar_file_error');
-   
+         
          errorContainers.forEach(container => {
             if (container) container.innerHTML = '';
          });
-   
+         
          const inputs = document.querySelectorAll("[name='office_bearer_name'], [name='office_bearer_gender'], [name='office_bearer_email'], [name='office_bearer_phone'], [name='office_bearer_designation'], [name='office_bearer_key_designation'], [name='office_bearer_date_of_association'], [name='office_bearer_pan'], [name='office_bearer_pan_file'], [name='office_bearer_name_as_aadhar'], [name='office_bearer_dob'], [name='office_bearer_aadhar'], [name='office_bearer_aadhar_file']");
-   
+         
          inputs.forEach(input => {
             input.style.borderColor = "";
          });
       }
-   
+      
       const fileInputs = document.querySelectorAll('[name="office_bearer_pan_file"]');
       fileInputs.forEach(function(input) {
          input.addEventListener('change', function(event) {
@@ -330,12 +324,12 @@ NGO || Create
             const fieldName = event.target.name.replace('', '');
             const errorDiv = document.querySelector(`.${fieldName}_error`);
             const maxFileSize = 1 * 1024 * 1024;
-   
+            
             errorDiv.innerHTML = '';
             if (!file) {
                return;
             }
-   
+            
             if (file.type !== 'application/pdf') {
                errorDiv.innerHTML = '<div class="error">Only PDF files are allowed.</div>';
                event.target.value = '';
@@ -355,12 +349,12 @@ NGO || Create
             const fieldName = event.target.name.replace('', '');
             const errorDiv = document.querySelector(`.${fieldName}_error`);
             const maxFileSize = 1 * 1024 * 1024;
-   
+            
             errorDiv.innerHTML = '';
             if (!file) {
                return;
             }
-   
+            
             if (file.type !== 'application/pdf') {
                errorDiv.innerHTML = '<div class="error">Only PDF files are allowed.</div>';
                event.target.value = '';
@@ -381,30 +375,30 @@ NGO || Create
                event.preventDefault();
             }
          });
-   
+         
          input.addEventListener('blur', function(event) {
             const phoneNumber = event.target.value.trim();
             const fieldName = event.target.name.replace('', '');
             const errorDiv = document.querySelector(`.${fieldName}_error`);
-   
+            
             errorDiv.innerHTML = '';
-   
+            
             const phoneRegex = /^[0-9]{10}$/;
-   
+            
             if (!phoneNumber) {
                errorDiv.innerHTML = 'Phone number is required.';
                errorDiv.style.color = 'red';
                event.target.style.borderColor = 'red';
                return;
             }
-   
+            
             if (!phoneRegex.test(phoneNumber)) {
                errorDiv.innerHTML = 'Please enter a valid 10-digit mobile number.';
                errorDiv.style.color = 'red';
                event.target.style.borderColor = 'red';
                return;
             }
-   
+            
             event.target.style.borderColor = '';
          });
       });
@@ -415,7 +409,7 @@ NGO || Create
             const fieldName = event.target.name.replace('', '');
             const errorDiv = document.querySelector(`.${fieldName}_error`);
             errorDiv.innerHTML = '';
-   
+            
             const Verhoeff = {
                "d": [
                   [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
@@ -448,7 +442,7 @@ NGO || Create
                   return c;
                }
             };
-   
+            
             if (Verhoeff['check'](uid) === 0) {
                event.target.style.borderColor = '';
                return true;
@@ -468,10 +462,10 @@ NGO || Create
             var regex = /[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
             const fieldName = event.target.name.replace('', '');
             const errorDiv = document.querySelector(`.${fieldName}_error`);
-   
+            
             errorDiv.innerHTML = '';
             event.target.style.borderColor = '';
-   
+            
             if (!regex.test(inputvalues)) {
                errorDiv.innerHTML = 'PAN number is not valid!';
                errorDiv.style.color = 'red';
@@ -487,15 +481,15 @@ NGO || Create
 <script type="text/javascript">
    $(document).ready(function () {
       const ngoId = $('meta[name="ngo-id"]').attr('content');
-   
+      
       $("#office_bearer_pan").blur(function () {
          const ngoPan = $(this).val().trim();
-   
+         
          if (!ngoPan) {
             $('#check_office_bearer_pan').html('<span style="color:#FF0000">Please provide a valid PAN No.</span>');
             return;
          }
-   
+         
          $.get("{{ route('admin.ngo.check_pan_no_of_office_bearer') }}", {
             office_bearer_pan: ngoPan,
             ngo_id: ngoId
@@ -517,15 +511,15 @@ NGO || Create
 <script type="text/javascript">
    $(document).ready(function () {
       const ngoId = $('meta[name="ngo-id"]').attr('content');
-   
+      
       $("#office_bearer_aadhar").blur(function () {
          const ngoAadhar = $(this).val().trim();
-   
+         
          if (!ngoAadhar) {
             $('#check_office_bearer_aadhar').html('<span style="color:#FF0000">Please provide a valid Aadhar No.</span>');
             return;
          }
-   
+         
          $.get("{{ route('admin.ngo.check_aadhar_no_of_office_bearer') }}", {
             office_bearer_aadhar: ngoAadhar,
             ngo_id: ngoId

@@ -756,8 +756,7 @@ NGO || Create
       const dynamicContent = document.getElementById('dynamic-content');
       const formActions = document.querySelector('.form-actions');
       const form = document.forms['vform'];
-   
-   
+      
       function initializeDropdowns() {
          $(".select2").select2();
          $('.selectpicker').selectpicker();

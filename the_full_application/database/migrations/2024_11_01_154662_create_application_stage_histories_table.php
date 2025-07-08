@@ -16,12 +16,14 @@ return new class extends Migration
             $table->bigInteger('department_scheme_id');
             $table->string('model_name')->nullable();
             $table->bigInteger('model_table_id')->nullable();
+            $table->bigInteger('initial_model_table_id')->nullable();
             $table->bigInteger('stage_id');            
             $table->string('stage_name');
             $table->date('created_date');
             $table->time('created_time');
             $table->foreignId('created_by')->nullable();
             $table->longText('created_by_remarks')->nullable();
+            $table->string('created_by_inspection_report_file')->nullable();
             $table->string('created_by_ip_v_four')->nullable();
             $table->string('created_by_ip_v_six')->nullable();
             $table->date('updated_date')->nullable();

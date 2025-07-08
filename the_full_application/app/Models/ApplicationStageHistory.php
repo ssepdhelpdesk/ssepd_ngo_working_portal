@@ -11,4 +11,9 @@ class ApplicationStageHistory extends Model implements Auditable
     use HasFactory;
     use \OwenIt\Auditing\Auditable;
     protected $guarded = [''];
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }

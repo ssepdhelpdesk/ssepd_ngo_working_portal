@@ -37,6 +37,7 @@ class DatabaseSeeder extends Seeder
             BankMasterSeeder::class,
             NgoCategorySeeder::class,
             GenderSeeder::class,
+            UpdateUserRolesSeeder::class,
             /*NgoRegistrationTableSeeder::class,
             NgoPartTwoOfficeBearerSeeder::class,
             NgoPartThreeActRegistrationsSeeder::class,*/

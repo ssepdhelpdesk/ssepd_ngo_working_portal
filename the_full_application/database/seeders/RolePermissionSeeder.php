@@ -36,6 +36,7 @@ class RolePermissionSeeder extends Seeder
             'TECH_OPERATOR',
             'DPM',
             'User',
+            'SpecialSchool',
         ];
 
         $allPermissions = Permission::pluck('id')->all();

@@ -1826,7 +1826,7 @@ public function edit_ngo_application(Request $request, string $id)
     $NgoPartSixFinancialStatus = NgoPartSixFinancialStatus::where('ngo_tbl_id', $id)->first();
     $user = User::find($NgoRegistration->user_table_id);
     $bankMaster = BankMaster::where('bank_id', $NgoRegistration->ifsc_code)->first();
-    return view('dashboard.ngo.edit', compact(
+    return view('dashboard.ngo.ngo_edit.edit_ngo_sections', compact(
         'categories',
         'NgoRegistration',
         'NgoPartTwoOfficeBearer',
@@ -2133,7 +2133,7 @@ public function update_ngo_application_part_two_update_office_bearer(Request $re
 public function update_ngo_application_part_two_add_another_office_bearer(Request $request, string $id)
 {
     $NgoRegistration = NgoRegistration::with(['state', 'district', 'block', 'grampanchayat', 'village', 'municipality'])->findOrFail($id);
-    return view('dashboard.ngo.add_another_office_bearer', compact('id', 'NgoRegistration'));
+    return view('dashboard.ngo.ngo_edit.add_another_office_bearer', compact('id', 'NgoRegistration'));
 }
 
 public function update_ngo_application_part_two_store_another_office_bearer(Request $request, string $id)

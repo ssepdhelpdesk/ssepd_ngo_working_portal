@@ -103,10 +103,9 @@ NGO || List
                                     <a class="dropdown-item" href="{{ route('admin.ngo.edit_ngo_application', $ngo->id) }}">Edit</a>
                                     @endcan
                                     @endif
-
                                     @if(auth()->user()->hasRole('Ngo') && in_array($ngo->application_stage_id, [1, 18, 20, 21, 22, 23, 30]))
                                     @can('ngo-edit')
-                                    <a class="dropdown-item" href="{{ route('admin.ngo.edit_ngo_application', $ngo->id) }}">ReApply</a>
+                                    <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#tooltipmodals">ReApply</a>                                    
                                     @endcan
                                     @endif
                                     @can('ngo-delete')
@@ -115,20 +114,62 @@ NGO || List
                                  </div>
                               </div>
                            </td>
+                           <div class="card">
+                              <div class="card-body">
+                                 <div id="tooltipmodals" class="modal" tabindex="-1" aria-labelledby="tooltipmodel" style="display: none;" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                       <div class="modal-content">
+                                          <div class="modal-header">
+                                             <h4 class="modal-title" id="tooltipmodel">Choose what you want to update before reapplying.</h4>
+                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                                          </div>
+                                          <div class="modal-body">
+                                             <div class="row mb-2">
+                                                <div class="col-md-6">
+                                                   <h5><a href="{{route('admin.ngo.edit_ngo_application', $ngo->id)}}" target="_blank"> Basic Details </a></h5>
+                                                   <hr>
+                                                </div>
+                                                <div class="col-md-6">
+                                                   <h5><a href="{{route('admin.ngo.edit_ngo_application', $ngo->id)}}" target="_blank"> Office Bearer Profile </a></h5>
+                                                   <hr>
+                                                </div>
+                                             </div>
+                                             <div class="row mb-2">
+                                                <div class="col-md-6">
+                                                   <h5><a href="{{route('admin.ngo.edit_ngo_application', $ngo->id)}}" target="_blank"> NGO Address </a></h5>
+                                                   <hr>
+                                                </div>
+                                                <div class="col-md-6">
+                                                   <h5><a href="{{route('admin.ngo.edit_ngo_application', $ngo->id)}}" target="_blank"> Additional Info </a></h5>
+                                                   <hr>
+                                                </div>
+                                             </div>
+                                          </div>
+                                          <div class="modal-footer">
+                                             <button type="button" class="btn btn-info waves-effect text-white" data-bs-dismiss="modal">Close</button>
+                                          </div>
+                                       </div>
+                                       <!-- /.modal-content -->
+                                    </div>
+                                    <!-- /.modal-dialog -->
+                                 </div>
+                                 <!-- /.modal -->                                 
+                              </div>
+                           </div>
                         </tr>
                         @endforeach
                         @endif
-                     </tbody>
+                     </tbody>                     
                   </table>
                </div>
             </div>
          </div>
       </div>
    </div>
-   <!-- row -->
-   <!-- ============================================================== -->
-   <!-- End Page Content -->
-   <!-- ============================================================== -->
+<!-- row -->
+<!-- ============================================================== -->
+<!-- End Page Content -->
+<!-- ============================================================== -->
 </div>
 @endsection 
 @section('script')

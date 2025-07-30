@@ -126,6 +126,7 @@ git clone git@github.com:ssepdhelpdesk/ssepd_ngo_working_portal.git
 cd ssepd_ngo_working_portal
 ```
 
+git clone  git@github.com:ssepdhelpdesk/ssepd_portal.git
 Now you can **do all your development here** — edit files, commit, push.
 
 ---
